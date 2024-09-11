@@ -5,6 +5,7 @@ This template should help get you started developing with Vue 3 in Vite.
 ## Recommended IDE Setup
 
 [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+Or you can work with VSCode only. Even with [Notepad](https://en.wikipedia.org/wiki/Windows_Notepad) will work just fine, up to you.
 
 ## Customize configuration
 
