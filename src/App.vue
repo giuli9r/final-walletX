@@ -12,7 +12,6 @@ const login = useLoginStore();
 <template>
   <header>
     <!-- <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" /> -->
-
     <div class="wrapper">
       <HelloWorld v-if="login.showDiv" msg="You are not logged in yet!" />
     </div>
@@ -20,10 +19,12 @@ const login = useLoginStore();
   
   <main>
     <!-- <TheWelcome /> -->
-    <HomeView  v-if="login.showDiv" msg="msg1 from App"  />
     <LoginView v-if="login.showDiv" msgLogin="LoginView from App" />
   </main>
-
+  
+  <div>
+    <HomeView  v-if="login.showDiv" msg="msg1 from App"  />
+  </div>
 
 </template>
 
