@@ -1,29 +1,44 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+<script >
+import WelcomeToLogin from './components/WelcomeToLogin.vue'
 import HomeView from './views/HomeView.vue'
 import LoginView from './views/LoginView.vue'
-
 import { useLoginStore } from './stores/loginStore.js'
-const login = useLoginStore();
 
+//desde aca
+export default {
+  components: {
+    WelcomeToLogin,
+    LoginView,
+    HomeView,
+  },
+  setup() {
+    // const authStore = useAuthStore();
+    const loginStore = useLoginStore()
+
+    // Verificar el estado del login al montar el componente
+    loginStore.checkLocalStorage();
+
+    return {
+      isLogged: loginStore.isLogged,
+    };
+  },
+};
+// hasta aca
 </script>
 
 <template>
   <header>
     <!-- <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" /> -->
     <div class="wrapper">
-      <HelloWorld v-if="login.showDiv" msg="You are not logged in yet!" />
+      <WelcomeToLogin v-if="!isLogged" msg="You are not logged in yet!" />
     </div>
   </header>
-  
   <main>
     <!-- <TheWelcome /> -->
-    <LoginView v-if="login.showDiv" msgLogin="LoginView from App" />
+    <LoginView v-if="!isLogged" msgLogin="LoginView from App" />
   </main>
-  
   <div>
-    <HomeView  v-if="login.showDiv" msg="msg1 from App"  />
+    <HomeView v-if="isLogged" msg="msg1 from App"  />
   </div>
 
 </template>
