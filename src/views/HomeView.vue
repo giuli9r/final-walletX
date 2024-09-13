@@ -1,12 +1,25 @@
-<script setup>
+<script>
+// defineProps({
+//   msg: {
+//     type: String,
+//     required: true
+//   }
+// })
+import { useLoginStore } from '@/stores/loginStore.js';
 
-defineProps({
-  msg: {
-    type: String,
-    required: true
-  }
-})
+export default {
+  setup() {
+    const loginStore = useLoginStore();
 
+    const handleLogout = () => {
+      loginStore.logout();
+    };
+
+    return {
+      handleLogout,
+    };
+  },
+};
 </script>
 
 <template>
@@ -15,6 +28,7 @@ defineProps({
         Hi! Welcome to HomeView,
     </h2>
     <p> file inside template defined in /views/HomeView </p>
+    <button @click="handleLogout">Cerrar sesión</button>
 </template>
 
 <style scoped>

@@ -1,15 +1,39 @@
-<script setup>
+<script >
+import { useLoginStore } from '@/stores/loginStore.js';
+export default {
+  data() {
+    return {
+      username: '',
+      password: '',
+    };
+  },
+  setup() {
+    const loginStore = useLoginStore();
+    const showUsername = loginStore.showUsername;
+    const showPassword = loginStore.showPassword;
+    const logged = loginStore.isLogged;
+    const toggleUsernameVisibility = () => { loginStore.toggleUsernameVisibility }
+    const togglePasswordVisibility = () => { loginStore.togglePasswordVisibility }
 
-import { useLoginStore } from '@/stores/loginStore.js'
-const loginStore = useLoginStore();
+    const handleLogin = () => {
+      // Aquí podrías implementar una verificación del usuario real
+      if (username.value !== '' && password.value !== '') {
+        loginStore.loginToLocal(username.value, password.value );
+      } else {
+        alert('Credenciales incorrectas');
+      }
+    }
+    const alertUP = () => {
+      loginStore.alertUP();
+    };
 
-defineProps({
-  msgLogin: {
-    type: String,
-    required: true
+    return {
+      handleLogin, showUsername, showPassword, logged, toggleUsernameVisibility, togglePasswordVisibility, alertUP
+    };
+
   }
-})
-
+  
+};
 </script>
 
 <template>
@@ -21,32 +45,34 @@ defineProps({
         <label for="username">User</label>
         <div class="input-with-toggle">
           <input
-          :type="loginStore.showUsername ? 'text' : 'password'"
+          :type="showUsername ? 'text' : 'password'"
           id="username"
           v-model="username"
           />
-          <button @click="loginStore.toggleUsernameVisibility">
-            {{ loginStore.showUsername ? 'Hide' : 'Show' }}
+          <button @click="toggleUsernameVisibility()">
+            {{ showUsername ? 'Hide' : 'Show' }}
           </button>
         </div>
         
         <label for="password">Password</label>
         <div class="input-with-toggle">
           <input
-          :type="loginStore.showPassword ? 'text' : 'password'"
+          :type="showPassword ? 'text' : 'password'"
           id="password"
           v-model="password"
           />
-          <button @click="loginStore.togglePasswordVisibility">
-            {{ loginStore.showPassword ? 'Hide' : 'Show' }}
+          <button @click="togglePasswordVisibility()">
+            {{ showPassword ? 'Hide' : 'Show' }}
           </button>
         </div>
       </div>
       
-      <button class="login-button" @click="loginStore.loginToLocal(username, password)">Login</button>
-      <button id="showUP" style="margin-top: 20px; background-color: #ccc; color: #666; font-size: 0.9em;" v-show="loginStore.logged" @click="alertUP()">Show User and Encrypted Password </button>
-      <p style="font-size: 0.8em; color: #999; margin-top: 10px;" v-show="loginStore.isLogged">Login Info: logged</p>
-      <p style="font-size: 0.8em; color: #999; margin-top: 10px;" v-show="!loginStore.isLogged">Login Info: not logged</p>
+      <button class="login-button" @click="handleLogin(username.value, password.value)">Login</button>
+      <button id="showUP" style="margin-top: 20px; font-size: 0.9em;" v-show="!logged" @click="alertUP()">
+        Show User and Encrypted Password 
+      </button>
+      <p style="font-size: 0.8em; color: #999; margin-top: 10px;" v-show="logged">Login Info: logged</p>
+      <p style="font-size: 0.8em; color: #999; margin-top: 10px;" v-show="!logged">Login Info: not logged</p>
     </div>
     <footer class="green">
       <span class="pa"> © 2024 Final S.A. All Rights Reserved. </span>
