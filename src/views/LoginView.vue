@@ -1,38 +1,60 @@
-<script >
+<script>
 import { useLoginStore } from '@/stores/loginStore.js';
+
 export default {
   data() {
     return {
       username: '',
       password: '',
+      showUsername: true,
+      showPassword: false,
+      logged: false,
     };
   },
-  setup() {
+  created() {
     const loginStore = useLoginStore();
-    const showUsername = loginStore.showUsername;
-    const showPassword = loginStore.showPassword;
-    const logged = loginStore.isLogged;
-    const toggleUsernameVisibility = () => { loginStore.toggleUsernameVisibility }
-    const togglePasswordVisibility = () => { loginStore.togglePasswordVisibility }
 
-    const handleLogin = () => {
-      // Aquí podrías implementar una verificación del usuario real
-      if (username.value !== '' && password.value !== '') {
-        loginStore.loginToLocal(username.value, password.value );
+    // Inicializamos las variables desde el store
+    this.showUsername = loginStore.showUsername;
+    this.showPassword = loginStore.showPassword;
+    this.logged = loginStore.isLogged;
+  },
+  computed: {
+    // Computed properties reactivas que obtienen los valores del store
+    showUsername() {
+      const loginStore = useLoginStore();
+      return loginStore.showUsername;
+    },
+    showPassword() {
+      const loginStore = useLoginStore();
+      return loginStore.showPassword;
+    },
+  },
+  methods: {
+    handleLogin() {
+      const loginStore = useLoginStore();
+      
+      // Implementar verificación de usuario
+      if (this.username !== '' && this.password !== '') {
+        loginStore.loginToLocal(this.username, this.password);
       } else {
         alert('Credenciales incorrectas');
       }
-    }
-    const alertUP = () => {
+    },
+    toggleUsernameVisibility() {
+      console.log("click!");
+      const loginStore = useLoginStore();
+      loginStore.toggleUsernameVisibility();
+    },
+    togglePasswordVisibility() {
+      const loginStore = useLoginStore();
+      loginStore.togglePasswordVisibility();
+    },
+    alertUP() {
+      const loginStore = useLoginStore();
       loginStore.alertUP();
-    };
-
-    return {
-      handleLogin, showUsername, showPassword, logged, toggleUsernameVisibility, togglePasswordVisibility, alertUP
-    };
-
+    }
   }
-  
 };
 </script>
 
@@ -49,7 +71,7 @@ export default {
           id="username"
           v-model="username"
           />
-          <button @click="toggleUsernameVisibility()">
+          <button @click="toggleUsernameVisibility">
             {{ showUsername ? 'Hide' : 'Show' }}
           </button>
         </div>
@@ -61,7 +83,7 @@ export default {
           id="password"
           v-model="password"
           />
-          <button @click="togglePasswordVisibility()">
+          <button @click="togglePasswordVisibility">
             {{ showPassword ? 'Hide' : 'Show' }}
           </button>
         </div>
