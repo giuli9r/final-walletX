@@ -1,29 +1,29 @@
-<script >
+<script>
 import WelcomeToLogin from './components/WelcomeToLogin.vue'
 import HomeView from './views/HomeView.vue'
 import LoginView from './views/LoginView.vue'
 import { useLoginStore } from './stores/loginStore.js'
 
-//desde aca
 export default {
   components: {
     WelcomeToLogin,
     LoginView,
     HomeView,
   },
-  setup() {
-    // const authStore = useAuthStore();
-    const loginStore = useLoginStore()
+  data() {
+    return {
+      isLogged: false, // Inicialmente en falso
+    };
+  },
+  created() {
+    const loginStore = useLoginStore();
 
     // Verificar el estado del login al montar el componente
     loginStore.checkLocalStorage();
-
-    return {
-      isLogged: loginStore.isLogged,
-    };
+    // Sincronizar la variable isLogged con el estado del loginStore
+    this.isLogged = loginStore.isLogged;
   },
 };
-// hasta aca
 </script>
 
 <template>
