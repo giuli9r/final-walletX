@@ -1,25 +1,26 @@
 <script>
-// defineProps({
-//   msg: {
-//     type: String,
-//     required: true
-//   }
-// })
 import { useLoginStore } from '@/stores/loginStore.js';
 
 export default {
-  setup() {
-    const loginStore = useLoginStore();
-
-    const handleLogout = () => {
+  methods: {
+    handleLogout() {
+      const loginStore = useLoginStore();
       loginStore.logout();
-    };
-
-    return {
-      handleLogout,
-    };
-  },
+    }
+  }
 };
+
+// idea - buscar si el usuario ya se logueo, al momento de montar el componente
+// methods: {
+//     checkLocalStorageSessionState() {
+//       return localStorage.getItem('loginStore.isLogged')
+//     }
+//   },
+//   mounted() {
+//     // methods can be called in lifecycle hooks, or other methods!
+//     this.checkLocalStorageSessionState()
+//   }
+
 </script>
 
 <template>
