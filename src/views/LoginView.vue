@@ -1,5 +1,7 @@
 <script>
 import { useLoginStore } from '@/stores/loginStore.js';
+import { handleLogin } from '@/services/loginService.js';
+
 
 export default {
   data() {
@@ -24,15 +26,18 @@ export default {
     },
     'loginStore.showPassword'(newValue) {
       this.showPassword = newValue;
+    },
+    'loginStore.isLogged'(newValue) {
+      this.logged = newValue;
     }
   },
   methods: {
     handleLogin() {
       // Implementar verificación de usuario
-      if (this.username !== '' && this.password !== '') {
-        this.loginStore.loginToLocal(this.username, this.password);
+      if (this.username !== '' && this.password !== '') { // change to OR
+        handleLogin(this.username, this.password);
       } else {
-        alert('Credenciales incorrectas');
+        alert('Empty values are not allowed.');
       }
     },
     toggleUsernameVisibility() {
