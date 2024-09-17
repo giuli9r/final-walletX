@@ -12,33 +12,42 @@ export default {
   },
   data() {
     return {
-      isLogged: false, // Inicialmente en falso
+      isLogged: false, // Inicialmente en falso,
     };
   },
   created() {
-    const loginStore = useLoginStore();
+    // const loginStore = useLoginStore();
 
-    // Verificar el estado del login al montar el componente
-    loginStore.checkLocalStorage();
-    // Sincronizar la variable isLogged con el estado del loginStore
-    this.isLogged = loginStore.isLogged;
+    // // Verificar el estado del login al montar el componente
+    // loginStore.checkLocalStorage();
+    // // Sincronizar la variable isLogged con el estado del loginStore
+    // this.isLogged = loginStore.isLogged;
+  },
+  watch: {
+    'loginStore.showUsername'(newValue) {
+      this.showUsername = newValue;
+    },
+    'loginStore.showPassword'(newValue) {
+      this.showPassword = newValue;
+    },
+    'loginStore.isLogged'(newValue) {
+      this.isLogged = newValue;
+    }
   },
 };
 </script>
 
 <template>
   <header>
-    <!-- <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" /> -->
     <div class="wrapper">
-      <WelcomeToLogin v-if="!isLogged" msg="You are not logged in yet!" />
+      <WelcomeToLogin v-show="!isLogged" msg="You are not logged in yet!" />
     </div>
   </header>
   <main>
-    <!-- <TheWelcome /> -->
-    <LoginView v-if="!isLogged" msgLogin="LoginView from App" />
+    <LoginView v-show="!isLogged" />
   </main>
   <div>
-    <HomeView v-if="isLogged" msg="msg1 from App"  />
+    <HomeView v-show="isLogged" />
   </div>
 
 </template>
