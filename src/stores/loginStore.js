@@ -5,14 +5,10 @@ export const useLoginStore = defineStore('login', {
   state: () => ({
     isLogged: false,
     count : 10,
-    showDiv : true,
     showUsername : true,
     showPassword : false,
     username : "",
     password : "",
-    data : null,
-    errorMsg : "",
-    userInfo : ""
   }),
   
   getters: {
@@ -40,7 +36,6 @@ export const useLoginStore = defineStore('login', {
       localStorage.setItem('isLogged', 'true');
       localStorage.setItem('username', u);
       localStorage.setItem('password', btoa(p));
-      // this.$router.push('/#'); // Redirect to home after login
     },
 
     login() {
@@ -65,14 +60,3 @@ export const useLoginStore = defineStore('login', {
   }
 
 });
-
-  //actions 
-  // function increment() {
-  //   count.value++
-  // }
-  //   // assign user and pass to localStorage
-  //   // //redirect
-  //   // // router.push('/home')
-  //   // // router.push({ path: '/home' })
-  //   console.log("Logged IN!")
-  // }
