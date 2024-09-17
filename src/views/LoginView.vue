@@ -9,50 +9,40 @@ export default {
       showUsername: true,
       showPassword: false,
       logged: false,
+      loginStore: useLoginStore() // Referencia unica
     };
   },
   created() {
-    const loginStore = useLoginStore();
-
     // Inicializamos las variables desde el store
-    this.showUsername = loginStore.showUsername;
-    this.showPassword = loginStore.showPassword;
-    this.logged = loginStore.isLogged;
+    this.showUsername = this.loginStore.showUsername;
+    this.showPassword = this.loginStore.showPassword;
+    this.logged = this.loginStore.isLogged;
   },
-  computed: {
-    // Computed properties reactivas que obtienen los valores del store
-    showUsername() {
-      const loginStore = useLoginStore();
-      return loginStore.showUsername;
+  watch: {
+    'loginStore.showUsername'(newValue) {
+      this.showUsername = newValue;
     },
-    showPassword() {
-      const loginStore = useLoginStore();
-      return loginStore.showPassword;
-    },
+    'loginStore.showPassword'(newValue) {
+      this.showPassword = newValue;
+    }
   },
   methods: {
     handleLogin() {
-      const loginStore = useLoginStore();
-      
       // Implementar verificación de usuario
       if (this.username !== '' && this.password !== '') {
-        loginStore.loginToLocal(this.username, this.password);
+        this.loginStore.loginToLocal(this.username, this.password);
       } else {
         alert('Credenciales incorrectas');
       }
     },
     toggleUsernameVisibility() {
-      console.log("click!");
-      const loginStore = useLoginStore();
-      loginStore.toggleUsernameVisibility();
+      this.loginStore.toggleUsernameVisibility();
     },
     togglePasswordVisibility() {
-      const loginStore = useLoginStore();
-      loginStore.togglePasswordVisibility();
+      this.loginStore.togglePasswordVisibility();
     },
     alertUP() {
-      const loginStore = useLoginStore();
-      loginStore.alertUP();
+      this.loginStore.alertUP();
     }
   }
 };
@@ -90,11 +80,11 @@ export default {
       </div>
       
       <button class="login-button" @click="handleLogin(username.value, password.value)">Login</button>
-      <button id="showUP" style="margin-top: 20px; font-size: 0.9em;" v-show="!logged" @click="alertUP()">
+      <button id="showUP" style="margin-top: 20px; font-size: 0.9em;" v-show="!this.logged" @click="alertUP">
         Show User and Encrypted Password 
       </button>
-      <p style="font-size: 0.8em; color: #999; margin-top: 10px;" v-show="logged">Login Info: logged</p>
-      <p style="font-size: 0.8em; color: #999; margin-top: 10px;" v-show="!logged">Login Info: not logged</p>
+      <p style="font-size: 0.8em; color: #999; margin-top: 10px;" v-show="this.logged">Login Info: logged</p>
+      <p style="font-size: 0.8em; color: #999; margin-top: 10px;" v-show="!this.logged">Login Info: not logged</p>
     </div>
     <footer class="green">
       <span class="pa"> © 2024 Final S.A. All Rights Reserved. </span>
