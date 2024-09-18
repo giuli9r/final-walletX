@@ -1,7 +1,7 @@
 <script>
 import { useLoginStore } from '@/stores/loginStore.js';
 import { handleLogin } from '@/services/loginService.js';
-
+// import { useRouter } from 'vue-router';
 
 export default {
   data() {
@@ -10,15 +10,16 @@ export default {
       password: '',
       showUsername: true,
       showPassword: false,
-      logged: false,
-      loginStore: useLoginStore() // Referencia unica
+      isLogged: false,
+      loginStore: useLoginStore(),
+      // router: useRouter() // Referencia unica
     };
   },
   created() {
-    // Inicializamos las variables desde el store
-    this.showUsername = this.loginStore.showUsername;
-    this.showPassword = this.loginStore.showPassword;
-    this.logged = this.loginStore.isLogged;
+    // Inicializamos las variables desde el store si existen
+    this.showUsername = this.loginStore.showUsername ?? "";
+    this.showPassword = this.loginStore.showPassword ?? "";
+    this.isLogged = this.loginStore.isLogged ?? false;
   },
   watch: {
     'loginStore.showUsername'(newValue) {
@@ -28,7 +29,7 @@ export default {
       this.showPassword = newValue;
     },
     'loginStore.isLogged'(newValue) {
-      this.logged = newValue;
+      this.isLogged = newValue;
     }
   },
   methods: {
@@ -36,6 +37,9 @@ export default {
       // Implementar verificación de usuario
       if (this.username !== '' && this.password !== '') { // change to OR
         handleLogin(this.username, this.password);
+        // const router = useRouter() // Referencia unica
+        // router.push('/'); // Redirige al usuario a la ruta de inicio
+        this.$router.push('/')
       } else {
         alert('Empty values are not allowed.');
       }
@@ -84,12 +88,12 @@ export default {
         </div>
       </div>
       
-      <button class="login-button" @click="handleLogin(username.value, password.value)">Login</button>
-      <button id="showUP" style="margin-top: 20px; font-size: 0.9em;" v-show="!this.logged" @click="alertUP">
+      <button class="login-button" @click="handleLogin()">Login</button>
+      <!-- <button id="showUP" style="margin-top: 20px; font-size: 0.9em;" v-show="!this.logged" @click="alertUP">
         Show User and Encrypted Password 
-      </button>
-      <p style="font-size: 0.8em; color: #999; margin-top: 10px;" v-show="this.logged">Login Info: logged</p>
-      <p style="font-size: 0.8em; color: #999; margin-top: 10px;" v-show="!this.logged">Login Info: not logged</p>
+      </button> -->
+      <!-- <p style="font-size: 0.8em; color: #999; margin-top: 10px;" v-show="this.logged">Login Info: logged</p>
+      <p style="font-size: 0.8em; color: #999; margin-top: 10px;" v-show="!this.logged">Login Info: not logged</p> -->
     </div>
     <footer class="green">
       <span class="pa"> © 2024 Final S.A. All Rights Reserved. </span>
