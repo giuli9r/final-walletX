@@ -25,8 +25,9 @@ export function handleLogin(username, password) {
     if (/^[a-zA-Z0-9]{5,20}$/.test(username)) {
         // si todo sale bien , se llama a loginstore.loginToLocal(user , password)
         loginStore.loginToLocal(username, password);
+        // router.push('/');
     } else {
-      return alert('Only alphanumeric characters are allowed.');
+      alert('Only alphanumeric characters are allowed.');
     }
 
 }
