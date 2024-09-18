@@ -1,7 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import { useLoginStore } from '@/stores/loginStore.js'
+
 import HomeView from '@/views/HomeView.vue';
 import LoginView from '@/views/LoginView.vue';
-import { useLoginStore } from '@/stores/loginStore.js'
+import TransactionComponent from '@/components/TransactionComponent.vue'
+import PurchaseComponent from '@/components/actions/PurchaseComponent.vue'
+import SaleComponent from '@/components/actions/SaleComponent.vue'
+
 
 
 const routes = [
@@ -14,7 +19,27 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: LoginView,
-  }
+  },
+  {
+    path: '/transactions',
+    name: 'transactions',
+    component: TransactionComponent, // O algún otro componente para manejar las tabs
+  },
+  {
+    path: '/statistics',
+    name: 'statistics',
+    component: () => import('@/components/StatisticsComponent.vue'), // Lazy loading
+  },
+  {
+    path: '/history',
+    name: 'history',
+    component: () => import('@/components/HistoryComponent.vue'),
+  },
+  {
+    path: '/help',
+    name: 'help',
+    component: () => import('@/components/HelpComponent.vue'),
+  },
 ];
 
 const router = createRouter({
