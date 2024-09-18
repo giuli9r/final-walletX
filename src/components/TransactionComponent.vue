@@ -1,5 +1,3 @@
-
-
 <script>
 import ActionButton from './buttons/actionButton.vue';
 import { useTransactionStore } from '@/stores/transactionStore.js';

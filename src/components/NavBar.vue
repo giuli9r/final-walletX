@@ -1,4 +1,73 @@
 <template>
+  <nav class="navbar">
+    <ul class="nav-links">
+      <li>
+        <router-link to="/">Home</router-link>
+      </li>
+      <li>
+        <router-link to="/transactions">Transactions</router-link>
+      </li>
+      <li>
+        <router-link to="/statistics">Statistics</router-link>
+      </li>
+      <li>
+        <router-link to="/history">History</router-link>
+      </li>
+      <li>
+        <router-link to="/help">Help</router-link>
+      </li>
+    </ul>
+  </nav>
+</template>
+
+<script>
+export default {
+  name: 'NavBar'
+};
+</script>
+
+<style scoped>
+.navbar {
+  background-color: #fff;
+  padding: 10px 20px;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  justify-content: center;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+.nav-links li {
+  font-size: 1.1rem;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+}
+
+.nav-links a:hover {
+  color: #000;
+  border-bottom: 2px solid #000;
+}
+
+.nav-links a.router-link-exact-active {
+  color: #000;
+  border-bottom: 2px solid #000;
+}
+</style>
+
+
+
+
+
+<!-- <template>
     <nav>
       <ul>
         <li><router-link to="/transactions">Transactions</router-link></li>
@@ -94,4 +163,4 @@
   top: 40px;
   white-space: nowrap;
 }
-</style>
+</style> -->

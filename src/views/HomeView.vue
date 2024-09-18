@@ -2,6 +2,7 @@
 import { useLoginStore } from '@/stores/loginStore.js';
 import NavBar from '@/components/NavBar.vue'
 import Footer from '@/components/Footer.vue'
+import HomeComponent from '@/components/Footer.vue'
 
 export default {
   data() {

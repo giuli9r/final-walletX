@@ -4,6 +4,7 @@ import { useLoginStore } from '@/stores/loginStore.js'
 import HomeView from '@/views/HomeView.vue';
 import LoginView from '@/views/LoginView.vue';
 import TransactionComponent from '@/components/TransactionComponent.vue'
+import HomeComponent from '@/components/HomeComponent.vue'
 import PurchaseComponent from '@/components/actions/PurchaseComponent.vue'
 import SaleComponent from '@/components/actions/SaleComponent.vue'
 
@@ -13,7 +14,7 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: HomeView,
+    component: HomeComponent,
   },
   {
     path: '/login',
@@ -49,7 +50,7 @@ const router = createRouter({
   });
   
 router.beforeEach((to, from, next) => {
-    const loginStore = useLoginStore(); // Verificar el estado de autenticación
+    const loginStore = useLoginStore(); 
   
     if (to.name !== 'Login' && !loginStore.isLogged) {
       // Si no está logueado y trata de acceder a una ruta protegida
