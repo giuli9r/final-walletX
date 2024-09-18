@@ -16,12 +16,11 @@ export default {
     };
   },
   created() {
-    // const loginStore = useLoginStore();
-
-    // // Verificar el estado del login al montar el componente
-    // loginStore.checkLocalStorage();
-    // // Sincronizar la variable isLogged con el estado del loginStore
-    // this.isLogged = loginStore.isLogged;
+    const loginStore = useLoginStore();
+     // Verificar el estado del login al montar el componente
+    loginStore.checkLocalStorage();
+     // Sincronizar la variable isLogged con el estado del loginStore
+    this.isLogged = loginStore.isLogged;
   },
   watch: {
     'loginStore.showUsername'(newValue) {
