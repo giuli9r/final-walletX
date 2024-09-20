@@ -10,17 +10,17 @@ export default {
       password: '',
       showUsername: true,
       showPassword: false,
-      isLogged: false,
+      // isLogged: false,
       loginStore: useLoginStore(),
       // router: useRouter() // Referencia unica
     };
   },
-  created() {
-    // Inicializamos las variables desde el store si existen
-    this.showUsername = this.loginStore.showUsername ?? "";
-    this.showPassword = this.loginStore.showPassword ?? "";
-    this.isLogged = this.loginStore.isLogged ?? false;
-  },
+  // created() {
+  //   // Inicializamos las variables desde el store si existen
+  //   this.showUsername = this.loginStore.showUsername ?? "";
+  //   this.showPassword = this.loginStore.showPassword ?? "";
+  //   this.isLogged = this.loginStore.isLogged ?? false;
+  // },
   watch: {
     'loginStore.showUsername'(newValue) {
       this.showUsername = newValue;
@@ -28,9 +28,9 @@ export default {
     'loginStore.showPassword'(newValue) {
       this.showPassword = newValue;
     },
-    'loginStore.isLogged'(newValue) {
-      this.isLogged = newValue;
-    }
+    // 'loginStore.isLogged'(newValue) {
+    //   this.isLogged = newValue;
+    // }
   },
   methods: {
     handleLogin() {
@@ -89,12 +89,7 @@ export default {
       </div>
       
       <button class="login-button" @click="handleLogin()">Login</button>
-      <!-- <button id="showUP" style="margin-top: 20px; font-size: 0.9em;" v-show="!this.logged" @click="alertUP">
-        Show User and Encrypted Password 
-      </button> -->
-      <!-- <p style="font-size: 0.8em; color: #999; margin-top: 10px;" v-show="this.logged">Login Info: logged</p>
-      <p style="font-size: 0.8em; color: #999; margin-top: 10px;" v-show="!this.logged">Login Info: not logged</p> -->
-    </div>
+      </div>
     <footer class="green">
       <span class="pa"> © 2024 Final S.A. All Rights Reserved. </span>
     </footer>
