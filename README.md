@@ -34,3 +34,10 @@ npm run build
 ```sh
 npm run lint
 ```
+
+
+COMMENTS
+
+LAS VISTAS SON TODO LO QUE TENGA EL NAVBAR DEFINIDO PARA NAVEGAR.
+ES DECIR HOME TRANSACTIONS STATISTICS HISTORY HELP.
+LUEGO, Cada vista puede hacer uno de los diferentes componentes para manejar la logica
