@@ -34,3 +34,12 @@ npm run build
 ```sh
 npm run lint
 ```
+
+
+COMMENTS
+
+LAS VISTAS SON TODO LO QUE TENGA EL NAVBAR DEFINIDO PARA NAVEGAR.
+ES DECIR HOME TRANSACTIONS STATISTICS HISTORY HELP.
+LUEGO, Cada vista puede hacer uno de los diferentes componentes para manejar la logica
+La idea es que el App.vue maneje la vista que se cargue desde el <router-view/>  y no un componente externo.
+

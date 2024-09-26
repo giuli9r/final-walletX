@@ -2,7 +2,7 @@
 import WelcomeToLogin from './components/WelcomeToLogin.vue'
 import HomeView from './views/HomeView.vue'
 import LoginView from './views/LoginView.vue'
-import { useLoginStore } from './stores/loginStore.js'
+import { useLoginStore } from '@/stores/loginStore.js';
 
 export default {
   components: {
@@ -37,23 +37,31 @@ export default {
 </script>
 
 <template>
-  <header>
-    <div class="wrapper">
-      <WelcomeToLogin v-show="!isLogged" msg="You are not logged in yet!" />
-    </div>
-  </header>
-  <main>
-    <LoginView v-show="!isLogged" />
-  </main>
-  <div>
-    <HomeView v-show="isLogged" />
+  <div v-if="!isLogged">
+    <header>
+      <div class="wrapper">
+        <WelcomeToLogin class="" v-if="!isLogged" msg="You are not logged in yet!" />
+      </div>
+    </header>
+    <main>
+      <LoginView @userLogin  v-if="!isLogged" />  <!-- emitir un evento a App.vue y modificar el isLogged -->
+    </main>
   </div>
+  <div v-else>
+    <router-view />
+  </div>
+  
   
 </template>
 
 <style scoped>
 header {
+  display: flex;
+  place-items: center;
   line-height: 1.5;
+  padding-right: calc(var(--section-gap) / 2);
+  background-color: rgb(248, 247, 243);
+  backdrop-filter: blur(10px);
 }
 
 .logo {
@@ -61,12 +69,6 @@ header {
   margin: 0 auto 2rem;
 }
 
-header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-    background-color: rgb(248, 247, 243);
-  }
   
   .logo {
     margin: 0 2rem 0 0;
