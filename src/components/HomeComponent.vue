@@ -9,11 +9,12 @@ export default {
     //   loginStore: useLoginStore() // Referencia unica
     };
   },
-  mounted() {
-    const loginStore = useLoginStore();
-    this.username = loginStore.username;
-    console.log(`the component is now mounted.`);
-  },
+  // mounted() {
+  //   const loginStore = useLoginStore();
+  //   this.username = loginStore.username;
+  //   loginStore.checkLocalStorage();
+  //   console.log(`the component is now mounted.`);
+  // },
   methods: {
     handleLogout() {
       this.loginStore.logout();
