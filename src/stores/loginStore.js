@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 
 export const useLoginStore = defineStore('login', {
   state: () => ({
-    isLogged: false,
+    isLoggedIn: false,
     count : 10,
     showUsername : true,
     showPassword : false,
@@ -29,26 +29,26 @@ export const useLoginStore = defineStore('login', {
 
     loginToLocal(u, p) {
       // Login already validated
-      this.isLogged = true;
+      this.isLoggedIn = true;
       this.username = u;
       this.password = p;
-      localStorage.setItem('isLogged', 'true');
+      localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('username', u);
       localStorage.setItem('password', btoa(p));
     },
 
     login() {
-      this.isLogged = true;
-      localStorage.setItem('isLogged', 'true');
+      this.isLoggedIn = true;
+      localStorage.setItem('isLoggedIn', 'true');
     },
     logout() {
-      this.isLogged = false;
-      localStorage.setItem('isLogged', 'false');
+      this.isLoggedIn = false;
+      localStorage.setItem('isLoggedIn', 'false');
       alert("Logged out!");
     },
     checkLocalStorage() {
-      const storedStatus = localStorage.getItem('isLogged');
-      this.isLogged = storedStatus === 'true';
+      const storedStatus = localStorage.getItem('isLoggedIn');
+      this.isLoggedIn = storedStatus === 'true';
     },
     toggleUsernameVisibility() {
       this.showUsername = !this.showUsername;
