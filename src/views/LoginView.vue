@@ -1,6 +1,9 @@
 <script>
-import { useLoginStore } from '@/stores/loginStore.js';
+// import { useLoginStore } from '@/stores/loginStore.js';
 import { handleLogin } from '@/services/loginService.js';
+import { mapState } from 'pinia';
+import { mapStores } from 'pinia';
+import { useLoginStore } from '@/stores/loginStore';
 // import { useRouter } from 'vue-router';
 
 export default {
@@ -10,32 +13,24 @@ export default {
       password: '',
       showUsername: true,
       showPassword: false,
-      isLogged: false,
-      loginStore: useLoginStore(),
-      // router: useRouter() // Referencia unica
+      isLoggedIn: false,
     };
   },
   created() {
-    // Inicializamos las variables desde el store si existen
-    this.showUsername = this.loginStore.showUsername ?? "";
-    this.showPassword = this.loginStore.showPassword ?? "";
-    this.isLogged = this.loginStore.isLogged ?? false;
+    // // Inicializamos las variables desde el store si existen
+    // this.showUsername = this.loginStore.showUsername ?? "";
+    // this.showPassword = this.loginStore.showPassword ?? "";
+    // this.isLoggedIn = this.loginStore.isLoggedIn ?? false;
   },
-  // watch: {
-  //   'loginStore.showUsername'(newValue) {
-  //     this.showUsername = newValue;
-  //   },
-  //   'loginStore.showPassword'(newValue) {
-  //     this.showPassword = newValue;
-  //   },
-  //   'loginStore.isLogged'(newValue) {
-  //     this.isLogged = newValue;
-  //   }
-  // },
+  computed: {
+    // note we are not passing an array, just one store after the other
+    // each store will be accessible as its id + 'Store'
+    ...mapStores(useLoginStore)
+  },
   methods: {
     handleLogin() {
       // Implementar verificación de usuario
-      if (this.username !== '' && this.password !== '') { // change to OR
+      if (this.username !== '' || this.password !== '') { 
         let check = handleLogin(this.username, this.password);
         // const router = useRouter() // Referencia unica
         // router.push('/'); // Redirige al usuario a la ruta de inicio
@@ -72,24 +67,24 @@ export default {
         <label for="username">User</label>
         <div class="input-with-toggle">
           <input
-          :type="showUsername ? 'text' : 'password'"
+          :type="this.loginStore.showUsername ? 'text' : 'password'"
           id="username"
           v-model="username"
           />
-          <button @click="toggleUsernameVisibility">
-            {{ showUsername ? 'Hide' : 'Show' }}
+          <button @click="toggleUsernameVisibility()">
+            {{ this.loginStore.showUsername ? 'Hide' : 'Show' }}
           </button>
         </div>
         
         <label for="password">Password</label>
         <div class="input-with-toggle">
           <input
-          :type="showPassword ? 'text' : 'password'"
+          :type="this.loginStore.showPassword ? 'text' : 'password'"
           id="password"
           v-model="password"
           />
-          <button @click="togglePasswordVisibility">
-            {{ showPassword ? 'Hide' : 'Show' }}
+          <button @click="togglePasswordVisibility()">
+            {{ this.loginStore.showPassword ? 'Hide' : 'Show' }}
           </button>
         </div>
       </div>
