@@ -45,7 +45,7 @@ export default {
       </select>
       
       <label>Fiat Currency</label>
-      <select v-model="selectedFiat" disabled>
+      <select v-model="selectedFiat">
         <option value="USD">USD Dollar</option>
         <option value="EUR">Euro</option>
         <option value="ARS">Peso AR</option>

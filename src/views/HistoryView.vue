@@ -6,10 +6,10 @@ export default {
   data() {
     return {
       count : 1,
-      viewName: "Help"
+      viewName: "History",
     };
   },
- 
+  
   methods: {
     increment() {
       this.count++

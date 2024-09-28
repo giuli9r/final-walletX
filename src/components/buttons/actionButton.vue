@@ -12,7 +12,7 @@ export default {
 
 <style scoped>
 button {
-  background-color: black;
+  background-color: rgb(94, 92, 92);
   color: white;
   padding: 10px;
   border: none;
@@ -22,7 +22,7 @@ button {
 .action-button {
   width: 100%;
   padding: 10px;
-  background-color: #000;
+  background-color: #3a3a3a;
   color: white;
   font-size: 1rem;
   font-weight: bold;

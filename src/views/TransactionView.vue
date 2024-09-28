@@ -1,109 +1,43 @@
 <script>
-import { useLoginStore } from '@/stores/loginStore.js';
-import { handleLogin } from '@/services/loginService.js';
-// import { useRouter } from 'vue-router';
+import { mapStores } from 'pinia';
+import TransactionComponent from '@/components/TransactionComponent.vue'
+
+// import { useLoginStore } from '@/stores/loginStore.js';
 
 export default {
   data() {
     return {
-      username: '',
-      password: '',
-      showUsername: true,
-      showPassword: false,
-      isLogged: false,
-      loginStore: useLoginStore(),
-      // router: useRouter() // Referencia unica
+      count : 1,
+      viewName: "Transaction",
+      p20: "padding: 50px",
+      mw75: "max-width: 75%"
     };
   },
-  created() {
-    // Inicializamos las variables desde el store si existen
-    this.showUsername = this.loginStore.showUsername ?? "";
-    this.showPassword = this.loginStore.showPassword ?? "";
-    this.isLogged = this.loginStore.isLogged ?? false;
+  components: {
+    TransactionComponent,
   },
-  // watch: {
-  //   'loginStore.showUsername'(newValue) {
-  //     this.showUsername = newValue;
-  //   },
-  //   'loginStore.showPassword'(newValue) {
-  //     this.showPassword = newValue;
-  //   },
-  //   'loginStore.isLogged'(newValue) {
-  //     this.isLogged = newValue;
-  //   }
-  // },
+ 
   methods: {
-    handleLogin() {
-      // Implementar verificación de usuario
-      if (this.username !== '' && this.password !== '') { // change to OR
-        let check = handleLogin(this.username, this.password);
-        // const router = useRouter() // Referencia unica
-        // router.push('/'); // Redirige al usuario a la ruta de inicio
-        if(check) {
-          this.updateBool()
-          this.$router.push('/')
-        }
-      } else {
-        alert('Empty values are not allowed.');
-      }
+    increment() {
+      this.count++
     },
-    updateBool(){
-      this.$emit('update-bool');
-    },
-    toggleUsernameVisibility() {
-      this.loginStore.toggleUsernameVisibility();
-    },
-    togglePasswordVisibility() {
-      this.loginStore.togglePasswordVisibility();
-    },
-    alertUP() {
-      this.loginStore.alertUP();
+    sayHi(){
+        alert(this.viewName)
     }
+  },
+  mounted() {
+    console.log(`The ${this.viewName} view  mounted.`)
   }
+
 };
 </script>
 
 <template>
-  
-  <div class="wrapper">
-    <div class="login-container">
-      <h2 class="green">Welcome!</h2>
-      <div class="input-group">
-        <label for="username">User</label>
-        <div class="input-with-toggle">
-          <input
-          :type="showUsername ? 'text' : 'password'"
-          id="username"
-          v-model="username"
-          />
-          <button @click="toggleUsernameVisibility">
-            {{ showUsername ? 'Hide' : 'Show' }}
-          </button>
-        </div>
-        
-        <label for="password">Password</label>
-        <div class="input-with-toggle">
-          <input
-          :type="showPassword ? 'text' : 'password'"
-          id="password"
-          v-model="password"
-          />
-          <button @click="togglePasswordVisibility">
-            {{ showPassword ? 'Hide' : 'Show' }}
-          </button>
-        </div>
-      </div>
-      
-      <button 
-      class="login-button" 
-      @click="handleLogin()"
-      >Login</button>
-    
-    </div>
-    <footer class="green">
-      <span class="pa"> © 2024 Final S.A. All Rights Reserved. </span>
-    </footer>
-  </div>
+    <h4 style="text-align: center;">You are ready to star your movements</h4>
+    <button @click="increment">Count is: {{ count }}</button>
+  <TransactionComponent :style="p20" title="Sell Crypto" buttonLabel="Sell" />
+  <TransactionComponent :style="p20" title="Buy Crypto" buttonLabel="Buy" />
+
 </template>
 
 
