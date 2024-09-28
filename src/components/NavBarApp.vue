@@ -1,30 +1,53 @@
+<script>
+import { mapStores } from 'pinia'
+import { useLoginStore } from '@/stores/loginStore'
+
+export default {
+ 
+  data(){
+    return {
+      isLoggedIn: localStorage.getItem('isLoggedIn')?? 0
+    }
+  },
+  components:{
+
+  },
+  computed: {
+    // note we are not passing an array, just one store after the other
+    // each store will be accessible as its id + 'Store'
+    ...mapStores(useLoginStore)
+  },
+
+};
+</script>
+
+
 <template>
   <nav class="navbar">
     <ul class="nav-links">
-      <li>
+      <li v-if="this.loginStore.isLoggedIn" >
         <router-link to="/">Home</router-link>
       </li>
-      <li>
+      <li v-if="this.loginStore.isLoggedIn" >
         <router-link to="/transactions">Transactions</router-link>
       </li>
-      <li>
+      <li v-if="this.loginStore.isLoggedIn" >
         <router-link to="/statistics">Statistics</router-link>
       </li>
-      <li>
+      <li v-if="this.loginStore.isLoggedIn" >
         <router-link to="/history">History</router-link>
       </li>
-      <li>
+      <li v-if="this.loginStore.isLoggedIn" >
         <router-link to="/help">Help</router-link>
+      </li>
+
+      <li v-if="!this.loginStore.isLoggedIn">
+        <router-link to="/login">Log In</router-link>
       </li>
     </ul>
   </nav>
 </template>
 
-<script>
-export default {
- 
-};
-</script>
 
 <style scoped>
 .navbar {

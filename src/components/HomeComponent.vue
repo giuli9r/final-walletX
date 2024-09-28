@@ -4,7 +4,7 @@ import { useLoginStore } from '@/stores/loginStore.js';
 export default {
   data() {
     return {
-      isLogged: true, // inicialmente true
+      isLoggedIn: true, // inicialmente true
       username: '',
     //   loginStore: useLoginStore() // Referencia unica
     };
@@ -22,8 +22,8 @@ export default {
     }
   },
   watch: {
-      'loginStore.isLogged'(newValue) {
-        this.isLogged = newValue;
+      'loginStore.isLoggedIn'(newValue) {
+        this.isLoggedIn = newValue;
       }
     }
 };
