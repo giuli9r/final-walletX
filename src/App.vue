@@ -1,70 +1,33 @@
 <script>
-import WelcomeToLogin from './components/WelcomeToLogin.vue'
-import HomeView from './views/HomeView.vue'
-import LoginView from './views/LoginView.vue'
-import { useLoginStore } from '@/stores/loginStore.js'
+import Footer from '@/components/Footer.vue'
+import NavBarComponent from '@/components/NavBarApp.vue'
+// import { useLoginStore } from '@/stores/loginStore.js'
 
 export default {
+  created() {
+    document.title = "CryptoX";
+  },
   components: {
-    WelcomeToLogin,
-    LoginView,
-    HomeView,
+    NavBarComponent,
+    Footer
   },
-  data() {
-    return {
-      isLogged: false, // Inicialmente en falso,
-    };
-  },
+  // data() {
+  //   return {
+  //     isLoggedIn: false // Inicialmente en falso,
+  //   };
+  // },
   methods: {
-    updateIsLogged(){
-      this.isLogged = true;
-      console.log(this.isLogged)
-      // this.isLogged = !this.isLogged
-    }
-  },
-  // created() {
-  //   const loginStore = useLoginStore();
-  //   // Verificar el estado del login al montar el componente
-  //   loginStore.checkLocalStorage();
-  //   // Sincronizar la variable isLogged con el estado del loginStore
-  //   this.isLogged = loginStore.isLogged;
-  // },
-  // watch: {
-  //   'loginStore.showUsername'(newValue) {
-  //     this.showUsername = newValue;
-  //   },
-  //   'loginStore.showPassword'(newValue) {
-  //     this.showPassword = newValue;
-  //   },
-  //   'loginStore.isLogged'(newValue) {
-  //     this.isLogged = newValue;
-  //   }
-  // },
+    // updateisLoggedIn(){
+    //   this.isLoggedIn = true;
+    // }
+  }
 };
 </script>
 
 <template>
-
-  <!-- <div v-if="!isLogged">
-    <header>
-      <div class="wrapper">
-        <WelcomeToLogin class="" msg="You are not logged in yet!" />
-      </div>
-    </header>
-    <main>
-      <LoginView @update-bool="updateIsLogged" /> 
-    </main>
-  </div>
-  <div v-else>
-    <router-view />
-  </div> -->
-
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/login">Login</router-link>
-  </nav>
-  <router-view />
-
+  <NavBarComponent/>
+  <router-view/>
+  <Footer/>
 </template>
 
 <style scoped>
