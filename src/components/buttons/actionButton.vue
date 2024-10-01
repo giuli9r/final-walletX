@@ -1,12 +1,35 @@
 <template>
-  <button type="submit" class="action-button">{{ label }}</button>
+  <button type="submit" 
+  class="action-button"
+  :style="{ backgroundColor: currentBackgroundColor }"
+  @mouseover="changeColorOnHover"
+  @mouseleave="resetColor"
+  >{{ label }}</button>
 </template>
 
 <script>
 export default {
   props: {
     label: String,
+    bkgColorHover: String,
   },
+
+  data() {
+    return {
+      bkgColorHover: 'green',  
+      currentBackgroundColor: 'black' 
+    };
+  },
+  methods: {
+    changeColorOnHover() {
+      this.currentBackgroundColor = this.bkgColorHover;
+    },
+    resetColor() {
+      this.currentBackgroundColor = 'black'; 
+    }
+  }
+
+
 }
 </script>
 

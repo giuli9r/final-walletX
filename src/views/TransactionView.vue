@@ -34,9 +34,9 @@ export default {
 
 <template>
     <h4 style="text-align: center;">You are ready to star your movements</h4>
-    <button @click="increment">Count is: {{ count }}</button>
-  <TransactionComponent :style="p20" title="Sell" buttonLabel="Sell" />
-  <TransactionComponent :style="p20" title="Buy" buttonLabel="Buy" />
+    <!-- <button @click="increment">Count is: {{ count }}</button> -->
+  <TransactionComponent :style="p20" bkgColor="AliceBlue" title="Sell" buttonLabel="Sell" />
+  <TransactionComponent :style="p20" bkgColor="LightGreen" title="Buy" buttonLabel="Buy" />
 
 </template>
 
@@ -50,7 +50,7 @@ export default {
   max-width: 500px;
   margin: 50px auto;
   padding: 20px;
-  background-color: #f5f5f5;
+  background-color: #b5ff93;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }

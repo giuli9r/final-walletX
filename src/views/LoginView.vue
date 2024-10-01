@@ -95,9 +95,6 @@ export default {
       >Login</button>
     
     </div>
-    <footer class="green">
-      <span class="pa"> © 2024 Final S.A. All Rights Reserved. </span>
-    </footer>
   </div>
 </template>
 

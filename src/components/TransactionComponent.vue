@@ -5,6 +5,7 @@ import { useTransactionStore } from '@/stores/transactionStore.js';
 export default {
   props: {
     title: String,
+    bkgColor: String,
     buttonLabel: String,
   },
   components: {
@@ -13,7 +14,7 @@ export default {
   data() {
     return {
       cryptoQuantity: 0,
-      Fiatcrypto: 0,
+      fiatQuantity: 0,
       selectedCrypto: '',
       selectedFiat: 'USD',
       cryptos: ['Bitcoin', 'Ethereum', 'Ripple', 'Litecoin', 'Cardano'],
@@ -34,7 +35,7 @@ export default {
 
 <template>
   <div>
-    <h2>{{ title }} crypto</h2>
+    <h2 :style="{ backgroundColor: bkgColor }" >{{ title }} crypto</h2>
     <form @submit.prevent="submitAction">
       <label>Quantity to {{ title }}</label>
       <input type="number" min="0" step="0.0000001" v-model="cryptoQuantity" required/>
@@ -58,7 +59,7 @@ export default {
         <option value="AUD">Dolar Australiano</option>
       </select>
       
-      <ActionButton style="margin-top: 15px;" :label="buttonLabel" />
+      <ActionButton style="margin-top: 15px;" :label="buttonLabel" :bkgColorHover="bkgColor"/>
     </form>
   </div>
 </template>
@@ -74,8 +75,15 @@ export default {
 }
 
 h2 {
+
+  color: #333; 
+  padding: 10px 20px; 
   text-align: center;
-  margin-bottom: 20px;
+  border-radius: 15px; 
+  border: 1px solid #b8b8b8; 
+  margin: 20px auto;
+  width: 75%; 
+  max-width: 650px;
 }
 
 .form-group {
