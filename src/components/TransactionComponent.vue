@@ -12,7 +12,8 @@ export default {
   },
   data() {
     return {
-      quantity: 0,
+      cryptoQuantity: 0,
+      Fiatcrypto: 0,
       selectedCrypto: '',
       selectedFiat: 'USD',
       cryptos: ['Bitcoin', 'Ethereum', 'Ripple', 'Litecoin', 'Cardano'],
@@ -25,7 +26,7 @@ export default {
         return;
       }
       // Lógica de compra o venta
-      console.log(`${this.buttonLabel} ${this.quantity} ${this.selectedCrypto}`);
+      console.log(`${this.buttonLabel} ${this.cryptoQuantity} ${this.selectedCrypto} at ${this.fiatQuantity} `);
     },
   },
 }
@@ -33,18 +34,23 @@ export default {
 
 <template>
   <div>
-    <h2>{{ title }}</h2>
+    <h2>{{ title }} crypto</h2>
     <form @submit.prevent="submitAction">
-      <label>Quantity</label>
-      <input type="number" v-model="quantity" required min="0" />
+      <label>Quantity to {{ title }}</label>
+      <input type="number" min="0" step="0.0000001" v-model="cryptoQuantity" required/>
       
-      <label>Crypto</label>
+      <label>Crypto Currency</label>
       <select v-model="selectedCrypto">
         <option disabled value="">Select Crypto</option>
         <option v-for="crypto in cryptos" :key="crypto" :value="crypto">{{ crypto }}</option>
       </select>
-      
+
+      <hr class="divider">
+
+      <label>Fiat Amount</label>
+      <input type="number" min="0" step="0.0000001" v-model="fiatQuantity" required/>
       <label>Fiat Currency</label>
+
       <select v-model="selectedFiat">
         <option value="USD">USD Dollar</option>
         <option value="EUR">Euro</option>
@@ -52,7 +58,7 @@ export default {
         <option value="AUD">Dolar Australiano</option>
       </select>
       
-      <ActionButton :label="buttonLabel" />
+      <ActionButton style="margin-top: 15px;" :label="buttonLabel" />
     </form>
   </div>
 </template>
@@ -98,5 +104,16 @@ input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+.divider {
+  border: none; 
+  border-top: 2px solid #f0dcdc;  
+  margin: 18px 0; 
+}
+
+.divider:hover {
+  border-top: 3px solid #f8aaaa;  
+  margin: 18px 0; 
 }
 </style>

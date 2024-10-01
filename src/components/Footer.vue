@@ -20,6 +20,7 @@ footer {
   padding: 10px;
   background-color: #f8f9fa;
   position: relative;
+  z-index: -999;
   bottom: 0;
   width: 100%;
 }

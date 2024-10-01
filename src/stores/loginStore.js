@@ -18,15 +18,14 @@ export const useLoginStore = defineStore('login', {
     increment() {
       this.count++
     },
-    alertUP() {
-      if(this.username){
-        alert(this.username +" logged")
-        return 
-      } else { 
-        alert("Not logged yet")
-      }
+    showStore(){
+      console.log("Show From Login Store")
+      console.log(this.isLoggedIn)
+      console.log("count_ "+ this.count)
+      console.log(this.showUsername)
+      console.log(this.username)
+      console.log(this.password)
     },
-
     loginToLocal(u, p) {
       // Login already validated
       this.isLoggedIn = true;
@@ -35,11 +34,6 @@ export const useLoginStore = defineStore('login', {
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('username', u);
       localStorage.setItem('password', btoa(p));
-    },
-
-    login() {
-      this.isLoggedIn = true;
-      localStorage.setItem('isLoggedIn', 'true');
     },
     logout() {
       this.isLoggedIn = false;

@@ -35,8 +35,8 @@ export default {
 <template>
     <h4 style="text-align: center;">You are ready to star your movements</h4>
     <button @click="increment">Count is: {{ count }}</button>
-  <TransactionComponent :style="p20" title="Sell Crypto" buttonLabel="Sell" />
-  <TransactionComponent :style="p20" title="Buy Crypto" buttonLabel="Buy" />
+  <TransactionComponent :style="p20" title="Sell" buttonLabel="Sell" />
+  <TransactionComponent :style="p20" title="Buy" buttonLabel="Buy" />
 
 </template>
 

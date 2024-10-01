@@ -13,7 +13,7 @@ import { useLoginStore } from '@/stores/loginStore'
 export default {
   data() {
     return {
-
+      
     };
   },
   components: {
@@ -26,19 +26,29 @@ export default {
  
   computed: {
     // note we are not passing an array, just one store after the other
-    // each store will be accessible as its id + 'Store'
+    // each store will be accessible as its id + 'Store' (loginStore)
     ...mapStores(useLoginStore)
   },
 
   methods: {
    
-    async buyStuff() {
+    buyStuff() {
       // use them anywhere!
       // if (this.userStore.isAuthenticated()) {
       //   await this.cartStore.buy()
       //   this.$router.push('/purchased')
       // }
+    },
+    showStoreHome(){
+      console.log("Show Login Store from Home btn");
+      console.log(useLoginStore.username);
+      console.log(useLoginStore.password);
+      console.log(useLoginStore.isLoggedIn);
+    },
+    showFromPinia(){
+      this.loginStore.showStore();
     }
+
     
   },
 
@@ -54,8 +64,10 @@ export default {
           <h3>
             You can 
             <span class="a2">buy</span> and
-            <span class="a2">sale</span> with ease, but insightfully.
+            <span class="a2">sale</span> with ease, but at your own risk.
           </h3>
+          <button @click="showStoreHome"> Click to console store From HOME</button>
+          <button @click="showFromPinia"> Click to console store From PINIA</button>
       </div>
       <!-- <LoginView v-if="!this.loginStore.isLoggedIn"/>
       <TransactionsView  v-if="this.loginStore.isLoggedIn" />
