@@ -1,7 +1,7 @@
 <script>
 import Footer from '@/components/Footer.vue'
 import NavBarComponent from '@/components/NavBarApp.vue'
-// import { useLoginStore } from '@/stores/loginStore.js'
+// refactor to clean code after this commit
 
 export default {  
   created() {
