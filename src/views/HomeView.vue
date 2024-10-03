@@ -1,6 +1,6 @@
 <script>
 import { useLoginStore } from '@/stores/loginStore'
-import {  mapStores, mapState, mapActions, mapGetters  } from 'pinia'
+import {  mapStores, mapState, mapActions  } from 'pinia'
 
 export default {
   data() {
@@ -28,9 +28,6 @@ export default {
     showFromPinia(){
       this.loginStore.showStore();
     },
-    updateisLoggedIn(){
-      this.isLoggedIn = true;
-    }
   },
   mounted() {
     console.log(`The HomeView  mounted.`)

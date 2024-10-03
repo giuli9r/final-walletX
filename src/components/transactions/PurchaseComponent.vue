@@ -1,6 +1,8 @@
 <template>
-    <TransactionComponent title="Buy Crypto" buttonLabel="Buy" />
-  </template>
+  <div>
+    <p> purchase component </p> 
+  </div>
+</template>
   
   <script>
   import TransactionComponent from '@/components/TransactionComponent.vue'

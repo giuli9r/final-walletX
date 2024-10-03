@@ -1,6 +1,6 @@
 <template>
-    <TransactionComponent title="Sell Crypto" buttonLabel="Sell" />
-  </template>
+    <p> sale component </p> 
+</template>
   
   <script>
   import TransactionComponent from '@/components/TransactionComponent.vue'

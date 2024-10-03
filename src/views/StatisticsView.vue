@@ -1,6 +1,5 @@
 <script>
 import { mapStores } from 'pinia';
-// import { useLoginStore } from '@/stores/loginStore.js';
 
 export default {
   data() {
