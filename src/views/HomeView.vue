@@ -1,55 +1,41 @@
 <script>
-// import { useLoginStore } from '@/stores/loginStore.js';
-// import LoginView from '@/views/LoginView.vue'
-// import StatisticsView from '@/views/StatisticsView.vue'
-// import HelpView from '@/views/HelpView.vue'
-// import TransactionsView from '@/views/TransactionView.vue'
-// import HomeComponentView from '@/components/HomeComponent.vue'
-
-import { mapStores } from 'pinia'
 import { useLoginStore } from '@/stores/loginStore'
-
+import {  mapStores, mapState, mapActions, mapGetters  } from 'pinia'
 
 export default {
   data() {
     return {
-      
+      username: ''
     };
   },
   components: {
-    // LoginView,
-    // StatisticsView,
-    // HelpView, 
-    // TransactionsView,
-    // HomeComponentView,
   },
- 
   computed: {
-    // note we are not passing an array, just one store after the other
     // each store will be accessible as its id + 'Store' (loginStore)
-    ...mapStores(useLoginStore)
+    ...mapState(useLoginStore, ['username', 'password', 'isLoggedIn' ]),
+    ...mapStores(useLoginStore),    // loginStore.isLoggedIn, loginStore.showUserName, loginStore.username
   },
-
   methods: {
-   
-    buyStuff() {
-      // use them anywhere!
-      // if (this.userStore.isAuthenticated()) {
-      //   await this.cartStore.buy()
-      //   this.$router.push('/purchased')
-      // }
-    },
+    ...mapActions(useLoginStore, [ 'logout',
+                                  'checkLocalStorage',
+      ]),
     showStoreHome(){
       console.log("Show Login Store from Home btn");
-      console.log(useLoginStore.username);
-      console.log(useLoginStore.password);
-      console.log(useLoginStore.isLoggedIn);
+      console.log(this.loginStore.isLoggedIn);
+      console.log(this.loginStore.username);
+      console.log(this.loginStore.password);
     },
     showFromPinia(){
       this.loginStore.showStore();
+    },
+    updateisLoggedIn(){
+      this.isLoggedIn = true;
     }
-
-    
+  },
+  mounted() {
+    console.log(`The HomeView  mounted.`)
+    this.username = localStorage.getItem('username')?? 'ASD';
+    // this.loginStore.loggedIn()
   },
 
 };
@@ -60,7 +46,8 @@ export default {
   <div>
       <div id="main-content">
         <div class="greetings">
-          <h1 class="green">You are logged in as {{ this.loginStore.username }}</h1>
+          <!-- <h1 class="green">You are logged in as {{ loginStore.username }}</h1> -->
+          <h1 class="green">You are logged in as {{ this.username }}</h1>
           <h3>
             You can 
             <span class="a2">buy</span> and

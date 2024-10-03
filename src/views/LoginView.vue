@@ -1,10 +1,7 @@
 <script>
-// import { useLoginStore } from '@/stores/loginStore.js';
+import { useLoginStore } from '@/stores/loginStore.js';
+import {  mapStores, mapState, mapActions  } from 'pinia';
 import { handleLogin } from '@/services/loginService.js';
-import { mapState } from 'pinia';
-import { mapStores } from 'pinia';
-import { useLoginStore } from '@/stores/loginStore';
-// import { useRouter } from 'vue-router';
 
 export default {
   data() {
@@ -23,28 +20,41 @@ export default {
     // this.isLoggedIn = this.loginStore.isLoggedIn ?? false;
   },
   computed: {
-    // note we are not passing an array, just one store after the other
     // each store will be accessible as its id + 'Store'
-    ...mapStores(useLoginStore)
+    ...mapStores(useLoginStore)     //  loginStore.isLoggedIn, loginStore.showUserName, loginStore.username
   },
   methods: {
+    /** 
+     * Actions from loginStore
+     **/
+    ...mapActions(useLoginStore, ['loginToLocal', 
+                                  'logout',
+                                  'toggleUsernameVisibility', 
+                                  'togglePasswordVisibility',
+                                  'checkLocalStorage',
+                                  'increment'
+      ]),
+
+    /** 
+     * Login service
+     **/
     handleLogin() {
-      // Implementar verificación de usuario
-      if (this.username !== '' || this.password !== '') { 
-        let check = handleLogin(this.username, this.password);
-        // const router = useRouter() // Referencia unica
-        // router.push('/'); // Redirige al usuario a la ruta de inicio
-        if(check) {
-          this.updateBool()
-          this.$router.push('/')
-        }
-      } else {
-        alert('Empty values are not allowed.');
+      let check = handleLogin(this.username, this.password);
+      // const router = useRouter() // Referencia unica
+      // router.push('/'); // Redirige al usuario a la ruta de inicio
+      if(check) {
+        // this.updateBool()
+        console.log(this.username + " - "+ this.password);
+        this.loginStore.loginToLocal(this.username, this.password);
+        this.loginStore.showStore();
+        this.$router.push('/')
       }
     },
-    updateBool(){
-      this.$emit('update-bool');
-    },
+    // updateBool(){
+    //   // this.$emit('update-bool');
+    //   this.isLoggedIn = true;
+    //   this.loginStore.loggedIn();
+    // },
     toggleUsernameVisibility() {
       this.loginStore.toggleUsernameVisibility();
     },

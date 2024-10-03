@@ -1,88 +1,58 @@
 <script>
-import { mapStores } from 'pinia';
+import { useProductStore } from '@/stores/exampleStore.js'
+import {  mapStores, mapState, mapActions  } from 'pinia'
 
 export default {
   data() {
     return {
       count : 1,
-      viewName: "Example"
+      viewName: "Example",
+       pToAdd: { id: 5, name: "p5", quantity: 23, price: 32}
     };
   },
- 
+  computed: {
+    ...mapState(useProductStore, ['countStoreState']),
+    ...mapStores(useProductStore),
+    // gives read access to this.count and this.double
+  },
   methods: {
-    increment() {
-      this.count++
-    },
-    sayHi(){
-        alert(this.viewName)
-    }
+    ...mapActions(useProductStore, ['inc']),
   },
   mounted() {
     console.log(`The ${this.viewName} view  mounted.`)
   }
-
+  
 };
 </script>
 
 <template>
   
   <h2>{{ this.viewName }}</h2>
-  <button @click="increment">Count is: {{ count }}</button>
+  <button @click="inc">Count is: {{ productStore.countStoreState }}</button>
   <button @click="sayHi">Hi!</button>
 
+ <ul>
+  <li v-for="product in productStore.products" :key="product.id">
+    <p>Producto: {{ product.name }} </p>
+    <p>Prquantityducto: {{ product.quantity }} </p>
+    <p>price: {{ product.price }} </p>
+  </li>
+ </ul>
+
+ <p>Cantidad: {{ productStore.productCount }}</p>
+ <ul>
+  <li v-for="product in productStore.productsCheaperThan(10)" :key="product.id">
+    <p> Less than 10: {{ product.name }} </p>
+  </li>
+ </ul>
+ <button @click="productStore.addProduct( this.pToAdd)">Add</button>
 </template>
 
 <style scoped>
-
-
-.login-container {
-  flex: auto;
-  width: 340px;
-  height: 380px;
-  max-width: 500px;
-  margin: 50px auto;
-  padding: 20px;
-  background-color: #f5f5f5;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-footer{
-  display: flex;
-  justify-content: center; /* Centra horizontalmente */
-}
-
 h2 {
   text-align: center;
   color: #333;
   margin-bottom: 20px;
-}
-
-.input-group {
-  margin-top: 22px;
-  margin-bottom: 15px;
-  font-weight: 200;
-}
-
-label {
-  display: block;
-  margin-bottom: 5px;
-  color: #666;
-  margin-top: 22px;
-
-}
-
-.green {
-text-decoration: none;
-color: hsla(160, 100%, 37%, 1);
-transition: 0.4s;
-padding: 3px;
-font-weight: 700
-}
-
-.input-with-toggle {
-  display: flex;
-  align-items: center;
 }
 
 input {
@@ -106,31 +76,4 @@ button {
 button:hover {
   background-color: #0056b3;
 }
-
-.login-button {
-  width: 100%;
-  padding: 10px;
-  background-color: #28a745;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.login-button:hover {
-  background-color: #218838;
-}
-
-
-.pa2 {
-   display: flex;
-    margin: 30px;
-    color: #ededed69;
-}
-
-.center{
-   justify-content: center
-}
-
 </style>

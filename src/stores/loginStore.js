@@ -11,12 +11,16 @@ export const useLoginStore = defineStore('login', {
   }),
   
   getters: {
-    doubleCount2: (state) => state.count * 2
+    doubleCount2: (state) => state.count * 2,
+    getUsername: (state) => state.username  
   },
   
   actions: {
     increment() {
       this.count++
+    },
+    loggedIn(){
+      this.isLoggedIn = true;
     },
     showStore(){
       console.log("Show From Login Store")
@@ -31,13 +35,14 @@ export const useLoginStore = defineStore('login', {
       this.isLoggedIn = true;
       this.username = u;
       this.password = p;
-      localStorage.setItem('isLoggedIn', 'true');
+      this.$patch({ username : u, password: p})
+      localStorage.setItem('isLoggedIn', true);
       localStorage.setItem('username', u);
       localStorage.setItem('password', btoa(p));
     },
     logout() {
       this.isLoggedIn = false;
-      localStorage.setItem('isLoggedIn', 'false');
+      localStorage.setItem('isLoggedIn', false);
       alert("Logged out!");
     },
     checkLocalStorage() {

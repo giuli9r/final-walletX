@@ -28,13 +28,14 @@ export default {
       }
       // Lógica de compra o venta
       console.log(`${this.buttonLabel} ${this.cryptoQuantity} ${this.selectedCrypto} at ${this.fiatQuantity} `);
+      
     },
   },
 }
 </script>
 
 <template>
-  <div>
+  <div class="container">
     <h2 :style="{ backgroundColor: bkgColor }" >{{ title }} crypto</h2>
     <form @submit.prevent="submitAction">
       <label>Quantity to {{ title }}</label>
@@ -65,6 +66,14 @@ export default {
 </template>
 
 <style scoped>
+
+.container{
+  border-radius: 15px; 
+  border: 1px solid #b8b8b8; 
+  padding: 5px;
+  margin-bottom: 15px;
+}
+
 .transaction-box {
   width: 400px;
   padding: 20px;
@@ -78,7 +87,7 @@ h2 {
 
   color: #333; 
   padding: 10px 20px; 
-  text-align: center;
+  text-align: left;
   border-radius: 15px; 
   border: 1px solid #b8b8b8; 
   margin: 20px auto;
