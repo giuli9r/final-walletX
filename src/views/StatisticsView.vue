@@ -1,40 +1,35 @@
 <script>
-import { mapStores } from 'pinia';
+// import { mapStores } from 'pinia';
 
 export default {
   data() {
     return {
-      count : 1,
-      viewName: "Statistics",
-    };
+      count: 1,
+      viewName: 'Statistics'
+    }
   },
-  
+
   methods: {
     increment() {
       this.count++
     },
-    sayHi(){
-        alert(this.viewName)
+    sayHi() {
+      alert(this.viewName)
     }
   },
   mounted() {
     console.log(`The ${this.viewName} view  mounted.`)
   }
-
-};
+}
 </script>
 
 <template>
-  
   <h2>{{ this.viewName }}</h2>
   <button @click="increment">Count is: {{ count }}</button>
   <button @click="sayHi">Hi!</button>
-
 </template>
 
 <style scoped>
-
-
 .login-container {
   flex: auto;
   width: 340px;
@@ -47,7 +42,7 @@ export default {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-footer{
+footer {
   display: flex;
   justify-content: center; /* Centra horizontalmente */
 }
@@ -69,15 +64,14 @@ label {
   margin-bottom: 5px;
   color: #666;
   margin-top: 22px;
-
 }
 
 .green {
-text-decoration: none;
-color: hsla(160, 100%, 37%, 1);
-transition: 0.4s;
-padding: 3px;
-font-weight: 700
+  text-decoration: none;
+  color: hsla(160, 100%, 37%, 1);
+  transition: 0.4s;
+  padding: 3px;
+  font-weight: 700;
 }
 
 .input-with-toggle {
@@ -122,14 +116,13 @@ button:hover {
   background-color: #218838;
 }
 
-
 .pa2 {
-   display: flex;
-    margin: 30px;
-    color: #ededed69;
+  display: flex;
+  margin: 30px;
+  color: #ededed69;
 }
 
-.center{
-   justify-content: center
+.center {
+  justify-content: center;
 }
 </style>

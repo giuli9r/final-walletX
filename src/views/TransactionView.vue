@@ -1,5 +1,5 @@
 <script>
-import { mapStores } from 'pinia';
+// import { mapStores } from 'pinia';
 import TransactionComponent from '@/components/TransactionComponent.vue'
 
 // import { useLoginStore } from '@/stores/loginStore.js';
@@ -7,42 +7,38 @@ import TransactionComponent from '@/components/TransactionComponent.vue'
 export default {
   data() {
     return {
-      count : 1,
-      viewName: "Transaction",
-      p20: "padding: 50px",
-      mw75: "max-width: 75%"
-    };
+      count: 1,
+      viewName: 'Transaction',
+      p20: 'padding: 50px',
+      mw75: 'max-width: 75%'
+    }
   },
   components: {
-    TransactionComponent,
+    TransactionComponent
   },
- 
+
   methods: {
     increment() {
       this.count++
     },
-    sayHi(){
-        alert(this.viewName)
+    sayHi() {
+      alert(this.viewName)
     }
   },
   mounted() {
     console.log(`The ${this.viewName} view  mounted.`)
   }
-
-};
+}
 </script>
 
 <template>
-    <h4 style="text-align: center;">You are ready to star your movements</h4>
-    <!-- <button @click="increment">Count is: {{ count }}</button> -->
+  <h4 style="text-align: center">You are ready to star your movements</h4>
+  <!-- <button @click="increment">Count is: {{ count }}</button> -->
   <TransactionComponent :style="p20" bkgColor="AliceBlue" title="Sell" buttonLabel="Sell" />
   <TransactionComponent :style="p20" bkgColor="LightGreen" title="Buy" buttonLabel="Buy" />
-
 </template>
 
-
 <style scoped>
-
 .login-container {
   flex: auto;
   width: 340px;
@@ -55,7 +51,7 @@ export default {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-footer{
+footer {
   display: flex;
   justify-content: center; /* Centra horizontalmente */
 }
@@ -77,15 +73,14 @@ label {
   margin-bottom: 5px;
   color: #666;
   margin-top: 22px;
-
 }
 
 .green {
-text-decoration: none;
-color: hsla(160, 100%, 37%, 1);
-transition: 0.4s;
-padding: 3px;
-font-weight: 700
+  text-decoration: none;
+  color: hsla(160, 100%, 37%, 1);
+  transition: 0.4s;
+  padding: 3px;
+  font-weight: 700;
 }
 
 .input-with-toggle {
@@ -130,14 +125,13 @@ button:hover {
   background-color: #218838;
 }
 
-
 .pa2 {
-   display: flex;
-    margin: 30px;
-    color: #ededed69;
+  display: flex;
+  margin: 30px;
+  color: #ededed69;
 }
 
-.center{
-   justify-content: center
+.center {
+  justify-content: center;
 }
 </style>
