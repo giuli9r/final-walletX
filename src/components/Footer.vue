@@ -1,5 +1,5 @@
 <template>
-  <footer >
+  <footer>
     <p>© 2024 CryptoX. All rights reserved.</p>
     <ul class="footer-links">
       <li><a href="terms-of-service" target="_blank">Terms of Service</a></li>
@@ -8,7 +8,6 @@
     </ul>
   </footer>
 </template>
-
 
 <script>
 export default {}

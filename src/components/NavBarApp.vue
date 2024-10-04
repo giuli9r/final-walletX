@@ -1,78 +1,73 @@
 <script>
-import { mapStores } from 'pinia'
-import { useLoginStore } from '@/stores/loginStore'
+import { mapStores, mapState } from 'pinia'
+import { useLoginStore } from '@/stores/loginStore.js'
 
 export default {
- 
-  data(){
+  data() {
     return {
-      isLoggedIn: false // Inicialmente en falso,
+      // isLoggedIn: false // Inicialmente en falso,
     }
   },
-  components:{
-
-  },
+  components: {},
   computed: {
     // note we are not passing an array, just one store after the other
     // each store will be accessible as its id + 'Store'
+    ...mapState(useLoginStore, ['username', 'isLoggedIn']),
     ...mapStores(useLoginStore)
   },
   mounted() {
     console.log(`The NavBar view  mounted.`)
     console.log(`Detecting user logged....`)
-    console.log('Var: '+ localStorage.getItem('isLoggedIn'))
-    let isLoggedIn = localStorage.getItem('isLoggedIn')?? 0;
-    if (isLoggedIn === "true") {
-      setTimeout(() => {
-        this.updateisLoggedIn();
-      }, 500);
-    }
+    console.log('Var: ' + localStorage.getItem('isLoggedIn'))
+    // let isLoggedIn = localStorage.getItem('isLoggedIn')?? 0;
+    // if (isLoggedIn === "true") {
+    //   setTimeout(() => {
+    //     this.updateisLoggedIn();
+    //   }, 500);
+    // }
   },
   methods: {
-    updateisLoggedIn(){
-      this.isLoggedIn = true;
+    updateisLoggedIn() {
+      this.isLoggedIn = true
     }
   }
-
-};
+}
 </script>
-
 
 <template>
   <nav class="navbar">
     <ul class="nav-links">
       <!-- <li v-if="this.loginStore.isLoggedIn" > -->
-      <li v-if="this.isLoggedIn" >
+      <li v-if="this.isLoggedIn">
         <router-link to="/">Home</router-link>
       </li>
       <!-- <li v-if="this.loginStore.isLoggedIn" > -->
-      <li v-if="this.isLoggedIn" >
+      <li v-if="this.isLoggedIn">
         <router-link to="/transactions">Transactions</router-link>
       </li>
       <!-- <li v-if="this.loginStore.isLoggedIn" > -->
-      <li v-if="this.isLoggedIn" >
+      <li v-if="this.isLoggedIn">
         <router-link to="/statistics">Statistics</router-link>
       </li>
       <!-- <li v-if="this.loginStore.isLoggedIn" > -->
-      <li v-if="this.isLoggedIn" >
+      <li v-if="this.isLoggedIn">
         <router-link to="/history">History</router-link>
       </li>
       <!-- <li v-if="this.loginStore.isLoggedIn" > -->
-      <li v-if="this.isLoggedIn" >
+      <li v-if="this.isLoggedIn">
         <router-link to="/help">Help</router-link>
       </li>
-      <li v-if="this.isLoggedIn" >
+      <li v-if="this.isLoggedIn">
         <router-link to="/example">Example</router-link>
       </li>
 
       <!-- <li v-if="!this.loginStore.isLoggedIn"> -->
-      <li v-if="!this.isLoggedIn" >
+      <li v-if="!this.isLoggedIn">
         <router-link to="/login">Log In</router-link>
       </li>
     </ul>
   </nav>
 </template>
-
 
 <style scoped>
 .navbar {
@@ -110,10 +105,6 @@ export default {
   border-bottom: 2px solid #000;
 }
 </style>
-
-
-
-
 
 <!-- <template>
     <nav>
