@@ -25,10 +25,10 @@ export const useTransactionStore = defineStore('transaction', {
   
   actions: {
 
-    updateWalletState (state, { CRYPTO_CODE, CRYPTO_AMOUNT, ACTION }) {
+    updateWalletState ( CRYPTO_CODE, CRYPTO_AMOUNT, ACTION ) {
       switch (ACTION) {
         case 'purchase':
-          
+          apiClient.get();
           break;
       
         case 'sell':
@@ -40,9 +40,9 @@ export const useTransactionStore = defineStore('transaction', {
       return
     },
 
-    addTransaction(transaction) {
+    addTransaction(transactionObj) {
       try {
-        this.transactions.push(transaction)
+        this.transactions.push(transactionObj)
         /**
            CALL TO API WITH AXIOS.POST
           CRYPTO_CODE, CRYPTO_AMOUNT, FIAT_AMOUNT ,ACTION
@@ -54,7 +54,7 @@ export const useTransactionStore = defineStore('transaction', {
 
     },
 
-    deleteTransaction(transaction){
+    deleteTransaction(transactionID){
 
       try {
         this.transactions.pop()
@@ -62,21 +62,21 @@ export const useTransactionStore = defineStore('transaction', {
          CALL TO API WITH AXIOS.DELETE
           ID_TRANSACTION 
          */
-        console.log("Transaction deleted")
+        console.log("Transaction deleted: " + transactionID)
       } catch (error) {
         console.log(error)
       }
       
     },
 
-    editTransaction(transaction){
+    editTransaction(transactionID){
       try {
-        this.transactions.pop()
+        this.transactions;
         /**
          CALL TO API WITH AXIOS.PATH
          TRANSACTION_ID, NEW_PARAMS
          */
-        console.log("Transaction eited")
+        console.log("Transaction edited: " + transactionID)
       } catch (error) {
         console.log(error)
       }
