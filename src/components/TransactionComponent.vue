@@ -1,4 +1,6 @@
 <script>
+import { useCryptoStore } from '@/stores/cryptos.js';
+import { useTransactionStore } from '@/stores/transactionStore.js';
 import ActionButton from './buttons/actionButton.vue'
 // import { useTransactionStore } from '@/stores/transactionStore.js';
 
@@ -13,22 +15,56 @@ export default {
   },
   data() {
     return {
+      cryptoStore: useCryptoStore(),
+      transactionStore: useTransactionStore(),
       cryptoQuantity: 0,
-      // fiatQuantity: 0, // a calcular con los datos devueltos de la API
+      fiatAmount: 0, // a calcular con los datos devueltos de la API
+      exchangeWinnerPrice: '',   // Exchange con mejor precio
       selectedCrypto: '', // BTC, ETH, RIP, LIT, CAR
-      selectedFiat: 'USD', // AR, USD
-      cryptos: ['Bitcoin', 'Ethereum', 'DAI', 'Solana', 'USDT']
-      // cryptos: [{'Bitcoin'}, 'Ethereum', 'Ripple', 'Litecoin', 'Cardano'],
+      selectedFiat: 'ARS', // AR, USD
+      cryptos: [
+        { name: 'Bitcoin', code: 'BTC'}, 
+        { name: 'Ethereum', code: 'ETH'}, 
+        { name: 'DAI', code: 'BTC'}, 
+        { name: 'Solana', code: 'SOL'}, 
+        { name: 'USDT', code: 'USDT'},
+      ]
     }
   },
   methods: {
+    updateOnChange() {
+      let key = this.selectedCrypto.toLowerCase();
+      const cryptoStorage = JSON.parse(localStorage.getItem('crypto-key'));
+      const allCryptos = cryptoStorage.cryptos;
+      const exchangeList = allCryptos[key];
+      let minPriceInMarket = Number.MAX_VALUE;
+      let exchangeWinner = "";
+
+      if (exchangeList) {
+        Object.keys(exchangeList).forEach((key) => {
+          if (exchangeList[key].ask < minPriceInMarket && exchangeList[key].ask != 0) {
+            minPriceInMarket = exchangeList[key].ask;   
+            exchangeWinner = key;
+          }
+          
+        });
+      this.exchangeWinnerPrice =  exchangeWinner.toUpperCase();
+      this.fiatAmount = (minPriceInMarket * this.cryptoQuantity).toFixed(2)
+      console.log(`Crypto de ${ exchangeWinner } al mejor precio: ${ minPriceInMarket }`);
+      }
+      return;
+    },
+
+
+
     submitAction() {
       if (!this.selectedCrypto) {
         alert('Please select a crypto.')
         return
       }
 
-      let action = action()
+      // let action = action()
+      let action = 'sell'
       // Lógica de compra o venta
       console.log(
         `${this.buttonLabel} ${this.cryptoQuantity} ${this.selectedCrypto} at ${this.fiatQuantity} - ${action} `
@@ -37,17 +73,18 @@ export default {
   },
 
   computed: {
-    fiatQuantity() {
-      return this.cryptoQuantity * this.selectedCryptoValue
-    },
     // selectedCryptoValue() {
-    //   this.selectedCrypto *
-    //   return 1
+    //   this.cryptos.selectedCrypto
     // },
     action() {
       return this.title !== 'Sell' ? 'purchase' : 'sale'
     }
-  }
+  },
+   mounted() {
+    console.log("fetch crypto data - IN PROGRESS.....")
+    this.cryptoStore.fetchCryptosPrices();
+    console.log("fetch crypto data - DONE.")
+   }
 }
 </script>
 
@@ -56,23 +93,24 @@ export default {
     <h2 :style="{ backgroundColor: bkgColor }">{{ title }} crypto</h2>
     <form @submit.prevent="submitAction">
       <label>Quantity to {{ title }}</label>
-      <input type="number" min="0" step="0.0000001" v-model="cryptoQuantity" required />
+      <input @input="updateOnChange" type="number" min="0" step="0.0000001" v-model="cryptoQuantity" required />
 
       <label>Crypto Currency</label>
-      <select v-model="selectedCrypto">
+      <select @change="updateOnChange" v-model="selectedCrypto">
         <option disabled value="">Select Crypto</option>
-        <option v-for="crypto in cryptos" :key="crypto" :value="crypto">{{ crypto }}</option>
+        <option v-for="crypto in cryptos" :key="crypto" :value="crypto.code" >{{ crypto.name }}</option>
       </select>
 
       <hr class="divider" />
 
       <label>Fiat Amount</label>
-      <input type="number" min="0" step="0.0000001" v-model="fiatQuantity" required />
-      <label>Fiat Currency</label>
+      <input type="number" min="0" step="0.000000001" v-model="this.fiatAmount" value="this.fiatAmount" required disabled />
+      <span v-if="this.exchangeWinnerPrice != '' "> El mejor precio lo tiene {{ this.exchangeWinnerPrice }}</span>
 
+      <label>Fiat Currency</label>
       <select v-model="selectedFiat">
-        <option value="USD">USD</option>
-        <option value="EUR">Euro</option>
+        <!-- <option value="USD">USD</option>
+        <option value="EUR">Euro</option> -->
         <option value="ARS">Peso AR</option>
       </select>
 
@@ -136,6 +174,10 @@ input[type='number']::-webkit-outer-spin-button,
 input[type='number']::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+span{
+  color: grey
 }
 
 .divider {
