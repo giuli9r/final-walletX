@@ -2,15 +2,14 @@
 // import { mapStores } from 'pinia';
 import TransactionComponent from '@/components/TransactionComponent.vue'
 
-// import { useLoginStore } from '@/stores/loginStore.js';
-
 export default {
   data() {
     return {
       count: 1,
       viewName: 'Transaction',
       p20: 'padding: 50px',
-      mw75: 'max-width: 75%'
+      mw75: 'max-width: 75%',
+      currentDate: ''
     }
   },
   components: {
@@ -26,6 +25,15 @@ export default {
     }
   },
   mounted() {
+    let dateObj = new Date();
+    let options = {
+        weekday: "long",
+        year: "numeric",
+        month: "short",
+        day: "numeric"
+    };
+    // this.currentDate = dateObj.toLocaleDateString("es-AR", options)
+    this.currentDate = dateObj.toLocaleDateString("en-US", options)
     console.log(`The ${this.viewName} view  mounted.`)
   }
 }
@@ -33,9 +41,12 @@ export default {
 
 <template>
   <h4 style="text-align: center">You are ready to star your movements</h4>
-  <!-- <button @click="increment">Count is: {{ count }}</button> -->
-  <TransactionComponent :style="p20" bkgColor="AliceBlue" title="Sell" buttonLabel="Sell" />
-  <TransactionComponent :style="p20" bkgColor="LightGreen" title="Buy" buttonLabel="Buy" />
+  <div style="text-align: center; margin-top: 20px;">
+      <p>Today's Date: {{ currentDate }}</p>
+  </div>
+
+  <TransactionComponent :style="p20" bkgColor="Tomato" title="Sell" />
+  <TransactionComponent :style="p20" bkgColor="LightGreen" title="Buy" />
 </template>
 
 <style scoped>
