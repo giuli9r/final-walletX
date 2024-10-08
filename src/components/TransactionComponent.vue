@@ -1,14 +1,15 @@
 <script>
 import { useCryptoStore } from '@/stores/cryptos.js';
 import { useTransactionStore } from '@/stores/transactionStore.js';
+import { useLoginStore } from '@/stores/loginStore.js';
 import ActionButton from './buttons/actionButton.vue'
 // import { useTransactionStore } from '@/stores/transactionStore.js';
 
 export default {
   props: {
     title: String,
-    bkgColor: String,
-    buttonLabel: String
+    bkgColor: String
+    // buttonLabel: String
   },
   components: {
     ActionButton
@@ -17,7 +18,8 @@ export default {
     return {
       cryptoStore: useCryptoStore(),
       transactionStore: useTransactionStore(),
-      cryptoQuantity: 0,
+      loginStore: useLoginStore(),
+      cryptoAmount: 0,
       fiatAmount: 0, // a calcular con los datos devueltos de la API
       exchangeWinnerPrice: '',   // Exchange con mejor precio
       selectedCrypto: '', // BTC, ETH, RIP, LIT, CAR
@@ -49,26 +51,42 @@ export default {
           
         });
       this.exchangeWinnerPrice =  exchangeWinner.toUpperCase();
-      this.fiatAmount = (minPriceInMarket * this.cryptoQuantity).toFixed(2)
+      this.fiatAmount = (minPriceInMarket * this.cryptoAmount).toFixed(2)
       console.log(`Crypto de ${ exchangeWinner } al mejor precio: ${ minPriceInMarket }`);
       }
       return;
     },
-
-
 
     submitAction() {
       if (!this.selectedCrypto) {
         alert('Please select a crypto.')
         return
       }
+      if (!this.cryptoAmount) {
+        alert('Please enter a value greater than 0.')
+        return
+      }
 
-      // let action = action()
-      let action = 'sell'
+      let action = this.title == 'Sell' ? 'sale' : 'purchase';
+      let transactionData = {
+        user_id: this.loginStore.username,
+        action: action,
+        crypto_code: this.selectedCrypto,
+        crypto_amount: this.cryptoAmount,
+        money: this.fiatAmount,
+        datetime: new Date(),
+      };
+
       // Lógica de compra o venta
       console.log(
-        `${this.buttonLabel} ${this.cryptoQuantity} ${this.selectedCrypto} at ${this.fiatQuantity} - ${action} `
+        `${this.title} ${this.cryptoAmount} ${this.selectedCrypto} at ${this.fiatAmount} - ${action} `
       )
+      console.log(`transactionData object `)
+      console.log(transactionData)
+
+      this.transactionStore.addTransaction(transactionData);
+      // this.resetFormValuesToNull();
+
     }
   },
 
@@ -77,7 +95,7 @@ export default {
     //   this.cryptos.selectedCrypto
     // },
     action() {
-      return this.title !== 'Sell' ? 'purchase' : 'sale'
+      return this.title != 'Sell' ? 'purchase' : 'sale'
     }
   },
    mounted() {
@@ -93,7 +111,7 @@ export default {
     <h2 :style="{ backgroundColor: bkgColor }">{{ title }} crypto</h2>
     <form @submit.prevent="submitAction">
       <label>Quantity to {{ title }}</label>
-      <input @input="updateOnChange" type="number" min="0" step="0.0000001" v-model="cryptoQuantity" required />
+      <input @input="updateOnChange" type="number" min="0" step="0.0000001" v-model="cryptoAmount" required />
 
       <label>Crypto Currency</label>
       <select @change="updateOnChange" v-model="selectedCrypto">
@@ -114,7 +132,7 @@ export default {
         <option value="ARS">Peso AR</option>
       </select>
 
-      <ActionButton style="margin-top: 15px" :label="buttonLabel" :bkgColorHover="bkgColor" />
+      <ActionButton style="margin-top: 15px" :label="title" :bkgColorHover="bkgColor" />
     </form>
   </div>
 </template>
@@ -138,6 +156,7 @@ export default {
 
 h2 {
   color: #333;
+  opacity: 80%;
   padding: 10px 20px;
   text-align: left;
   border-radius: 15px;
