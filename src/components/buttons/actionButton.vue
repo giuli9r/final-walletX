@@ -1,7 +1,7 @@
 <template>
   <button type="submit" 
   class="action-button"
-  :style="{ backgroundColor: currentBackgroundColor }"
+  :style="{ backgroundColor: currentBackgroundColor,  color: currentTextColor }"
   @mouseover="changeColorOnHover"
   @mouseleave="resetColor"
   >{{ label }}</button>
@@ -16,20 +16,20 @@ export default {
 
   data() {
     return {
-      bkgColorHover: 'green',  
-      currentBackgroundColor: 'black' 
+      currentBackgroundColor: 'black' ,
+      currentTextColor: 'white', 
     };
   },
   methods: {
     changeColorOnHover() {
       this.currentBackgroundColor = this.bkgColorHover;
+      this.currentTextColor = 'black';  //
     },
     resetColor() {
       this.currentBackgroundColor = 'black'; 
+      this.currentTextColor = 'white';  
     }
   }
-
-
 }
 </script>
 
@@ -55,7 +55,4 @@ button {
   transition: background-color 0.3s ease;
 }
 
-.action-button:hover {
-  background-color: #088b1e;
-}
 </style>
