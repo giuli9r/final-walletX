@@ -11,7 +11,8 @@ export default {
   components: { LogoutComponent },
   computed: {
     username() {
-      return this.store.username // forma para recuperar state del Store.js
+      let username = localStorage.getItem('username') != '' ? localStorage.getItem('username') : this.store.username ;
+      return username
     },
     isLoggedIn() {
       return this.store.isLoggedIn
@@ -33,7 +34,7 @@ export default {
     <div id="main-content">
       <div class="greetings">
         <!-- <h1 class="green">You are logged in as {{ loginStore.username }}</h1> -->
-        <h1 class="green">You are logged in as {{ this.username }}</h1>
+        <h1 class="green">You are logged in as {{  this.username }}</h1>
         <h3>
           You can
           <span class="a2">buy</span> and <span class="a2">sale</span> with ease, but at your own
