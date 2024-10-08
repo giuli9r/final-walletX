@@ -1,18 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { useLoginStore } from '@/stores/loginStore.js'
-
 import HomeView from '@/views/HomeView.vue';
 import LoginView from '@/views/LoginView.vue';
 import TransactionView from '@/views/TransactionView.vue';
-// import StatisticsView from '@/views/StatisticsView.vue';
-// import HistoryView from '@/views/HistoryView.vue';
-// import HelpView from '@/views/HelpView.vue';
-// import TransactionComponent from '@/components/TransactionComponent.vue'
-// import HomeComponent from '@/components/HomeComponent.vue'
-// import PurchaseComponent from '@/components/transactions/PurchaseComponent.vue'
-// import SaleComponent from '@/components/transactions/SaleComponent.vue'
-
-
 
 const routes = [
   {
