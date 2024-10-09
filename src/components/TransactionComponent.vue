@@ -34,25 +34,46 @@ export default {
     }
   },
   methods: {
-    updateOnChange() {
+    async updateOnChange() {
       let key = this.selectedCrypto.toLowerCase();
+      // if ( !JSON.parse(localStorage.getItem('crypto-key')) ) {
+      //   this.cryptoStore.fetchCryptosPrices();
+      // } 
+
       const cryptoStorage = JSON.parse(localStorage.getItem('crypto-key'));
       const allCryptos = cryptoStorage.cryptos;
       const exchangeList = allCryptos[key];
       let minPriceInMarket = Number.MAX_VALUE;
+      let maxPriceInMarket = Number.MIN_VALUE;
       let exchangeWinner = "";
 
       if (exchangeList) {
+      if( this.action == 'purchase') {
+        // totalAsk = Precio de compra final incluyendo las comisiones de transferencia y trade
+        // si quiero comprar tengo que buscar el menor precio
         Object.keys(exchangeList).forEach((key) => {
-          if (exchangeList[key].ask < minPriceInMarket && exchangeList[key].ask != 0) {
-            minPriceInMarket = exchangeList[key].ask;   
+          if (exchangeList[key].totalAsk < minPriceInMarket && exchangeList[key].totalAsk != 0) {
+            minPriceInMarket = exchangeList[key].totalAsk;   
             exchangeWinner = key;
           }
-          
         });
-      this.exchangeWinnerPrice =  exchangeWinner.toUpperCase();
-      this.fiatAmount = (minPriceInMarket * this.cryptoAmount).toFixed(2)
+        this.fiatAmount = (minPriceInMarket * this.cryptoAmount).toFixed(2)
       console.log(`Crypto de ${ exchangeWinner } al mejor precio: ${ minPriceInMarket }`);
+      }
+
+      // totalBid = Precio de venta final incluyendo las comisiones de transferencia y trade
+      if( this.action == 'sale') {
+        // si quiero vender tengo que buscar el mayor precio
+        Object.keys(exchangeList).forEach((key) => {
+          if (exchangeList[key].totalBid > maxPriceInMarket && exchangeList[key].totalBid != 0) {
+            maxPriceInMarket = exchangeList[key].totalBid;   
+            exchangeWinner = key;
+          }
+        });
+        this.fiatAmount = (maxPriceInMarket * this.cryptoAmount).toFixed(2)
+      console.log(`Crypto de ${ exchangeWinner } al mejor precio: ${ maxPriceInMarket }`);
+      }
+      this.exchangeWinnerPrice =  exchangeWinner.toUpperCase();
       }
       return;
     },
@@ -138,7 +159,7 @@ export default {
 
       <label>Fiat Amount</label>
       <input type="number" min="0" step="0.000000001" v-model="this.fiatAmount" value="this.fiatAmount" required disabled />
-      <span v-if="this.exchangeWinnerPrice != '' "> El mejor precio lo tiene {{ this.exchangeWinnerPrice }}</span>
+      <span v-if="this.exchangeWinnerPrice != '' "> El mejor precio lo tiene {{ this.exchangeWinnerPrice }} (incluye las comisiones de transferencia y trade)</span>
 
       <label>Fiat Currency</label>
       <select v-model="selectedFiat">
