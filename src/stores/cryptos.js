@@ -18,7 +18,10 @@ export const useCryptoStore = defineStore('crypto', {
   actions: {
     
     async fetchCryptosPrices() {
-      if (this.cached) return;
+      // if (this.cached) {
+      //   console.log("crypto data already cached")
+      //   return;
+      // }
       try {
         for (let cryptoCode in this.cryptos) {
           const criptoResponse = await axios.get(
