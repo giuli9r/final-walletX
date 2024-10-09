@@ -67,26 +67,41 @@ export default {
         return
       }
 
+      let datetime = this.getTime();
+      let username = localStorage.getItem('username');
       let action = this.title == 'Sell' ? 'sale' : 'purchase';
       let transactionData = {
-        user_id: this.loginStore.username,
+        user_id: username,
         action: action,
         crypto_code: this.selectedCrypto,
         crypto_amount: this.cryptoAmount,
         money: this.fiatAmount,
-        datetime: new Date(),
+        datetime: datetime, // DD-MM-YYYY hh:ss
       };
 
-      // Lógica de compra o venta
-      console.log(
-        `${this.title} ${this.cryptoAmount} ${this.selectedCrypto} at ${this.fiatAmount} - ${action} `
-      )
-      console.log(`transactionData object `)
-      console.log(transactionData)
+        console.log( `${this.title} ${this.cryptoAmount} ${this.selectedCrypto} at ${this.fiatAmount} - ${action} ` )
+        console.log(`transactionData object `, transactionData)
+      let response = this.transactionStore.addTransaction(transactionData);
+      this.resetFormValuesToNull();
 
-      this.transactionStore.addTransaction(transactionData);
-      // this.resetFormValuesToNull();
+      return response
+    },
+    getTime(){
+      const fecha = new Date();
+      // Extraer día, mes, año, hora
+      const dd = ("0" + fecha.getDate()).slice(-2);
+      const mo = ("0" + (fecha.getMonth() + 1)).slice(-2); // Los meses en JavaScript van de 0 a 11
+      const yy = fecha.getFullYear();
+      const hh = ("0" + fecha.getHours()).slice(-2);
+      const mi = ("0" + fecha.getMinutes()).slice(-2);
+      // Formatear la fecha en DD-MM-YYYY hh:mm
+      const fechaFormateada = `${dd}-${mo}-${yy} ${hh}:${mi}`;
 
+      console.log(fechaFormateada);
+      return fechaFormateada
+    },
+    resetFormValuesToNull () {
+      console.log("TODO");
     }
   },
 
