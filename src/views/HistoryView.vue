@@ -1,11 +1,12 @@
 <script>
-import { mapStores } from 'pinia';
+import HistoryComponent from '@/components/HistoryComponent.vue';
 
 export default {
+  components: { HistoryComponent },
   data() {
     return {
       count : 1,
-      viewName: "History",
+      viewName: "History of transactions",
     };
   },
   
@@ -25,10 +26,9 @@ export default {
 </script>
 
 <template>
-  
+  <br>
   <h2>{{ this.viewName }}</h2>
-  <button @click="increment">Count is: {{ count }}</button>
-  <button @click="sayHi">Hi!</button>
+  <history-component></history-component>
 
 </template>
 
