@@ -78,7 +78,7 @@ export default {
       return;
     },
 
-    submitAction() {
+    async submitAction() {
       if (!this.selectedCrypto) {
         alert('Please select a crypto.')
         return
@@ -102,7 +102,7 @@ export default {
 
         console.log( `${this.title} ${this.cryptoAmount} ${this.selectedCrypto} at ${this.fiatAmount} - ${action} ` )
         console.log(`transactionData object `, transactionData)
-      let response = this.transactionStore.addTransaction(transactionData);
+      let response = await this.transactionStore.addTransaction(transactionData); // API CALL
       this.resetFormValuesToNull();
 
       return response
@@ -122,7 +122,10 @@ export default {
       return fechaFormateada
     },
     resetFormValuesToNull () {
-      console.log("TODO");
+      this.cryptoAmount = 0;
+      this.exchangeWinnerPrice = '';
+      this.selectedCrypto = '';
+      this.fiatAmount = 0;
     }
   },
 
@@ -144,7 +147,7 @@ export default {
 
 <template>
   <div class="container">
-    <h2 :style="{ backgroundColor: bkgColor }">{{ title }} crypto</h2>
+  <h2 :style="{ backgroundColor: LightGray, color: bkgColor }">{{ title }} crypto</h2>
     <form @submit.prevent="submitAction">
       <label>Quantity to {{ title }}</label>
       <input @input="updateOnChange" type="number" min="0" step="0.0000001" v-model="cryptoAmount" required />
@@ -176,7 +179,8 @@ export default {
 <style scoped>
 .container {
   border-radius: 15px;
-  border: 1px solid #b8b8b8;
+  background-color: #f5f5f5;
+  border: 1px solid #0a0a0a;
   padding: 5px;
   margin-bottom: 15px;
 }
