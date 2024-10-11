@@ -1,105 +1,13 @@
-<template>
-    <div class="transaction-history">
-      <!-- <h2>Historial de Movimientos</h2> -->
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Crypto Code</th>
-            <th>Crypto Amount</th>
-            <th>Date Time</th>
-            <th>Action</th>
-            <th>Fiat Amoun</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            v-for="transaction in filteredTransactions"
-            :key="transaction.id"
-            :class="{'purchase-row': transaction.action === 'purchase', 'sale-row': transaction.action === 'sale'}"
-          >
-            <td>{{ transaction.id }}</td>
-            <td>{{ transaction.crypto_code }}</td>
-            <td>{{ transaction.crypto_amount }}</td>
-            <td>{{ transaction.datetime }}</td>
-            <td>{{ transaction.action === 'purchase' ? 'Compra' : 'Venta' }}</td>
-            <td :class="{'money-positive': transaction.action === 'sale', 'money-negative': transaction.action === 'purchase'}">
-              {{ getMoneyAmount(transaction) }}
-            </td>
-            <td>
-              <button class="btn info" @click="viewTransaction(transaction)">Ver</button>
-              <button class="btn warning" @click="editTransaction(transaction)">Editar</button>
-              <button class="btn danger" @click="deleteTransaction(transaction.id)">Eliminar</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-  
-      <!-- Modal para ver los detalles de la transacción -->
-      <div v-if="showModal" class="modal-overlay">
-        <div class="modal">
-          <h3>Detalles de la Transacción</h3>
-          <p><strong>ID:</strong> {{ selectedTransaction.id }}</p>
-          <p><strong>Código Cripto:</strong> {{ selectedTransaction.crypto_code }}</p>
-          <p><strong>Cantidad:</strong> {{ selectedTransaction.crypto_amount }}</p>
-          <p><strong>Fecha y Hora:</strong> {{ selectedTransaction.datetime }}</p>
-          <p><strong>Acción:</strong> {{ selectedTransaction.action === 'purchase' ? 'Compra' : 'Venta' }}</p>
-          <p><strong>Money:</strong> {{ getMoneyAmount(selectedTransaction) }}</p>
-  
-          <button @click="closeModal">Cerrar</button>
-        </div>
-      </div>
-    </div>
-</template>
-  
 <script>
+import { useTransactionStore } from '@/stores/transactionStore';
+
+
   export default {
     name: "TransactionHistory",
     data() {
       return {
-        transactions: [
-          {
-            id: 1,
-            crypto_code: "BTC",
-            crypto_amount: 0.5,
-            user_id: "USER1",
-            datetime: "2024-10-10 14:23",
-            action: "purchase",
-          },
-          {
-            id: 2,
-            crypto_code: "ETH",
-            crypto_amount: 2.0,
-            user_id: "USER1",
-            datetime: "2024-10-09 18:45",
-            action: "sale",
-          },
-          {
-            id: 3,
-            crypto_code: "LTC",
-            crypto_amount: 1.5,
-            user_id: "USER2",
-            datetime: "2024-10-08 11:10",
-            action: "purchase",
-          }, 
-          {
-            id: 3,
-            crypto_code: "LTC",
-            crypto_amount: 1.5,
-            user_id: "USER1",
-            datetime: "2024-10-08 12:10",
-            action: "purchase",
-          },
-          {
-            id: 4,
-            crypto_code: "BTC",
-            crypto_amount: 0.25,
-            user_id: "USER1",
-            datetime: "2024-10-07 09:33",
-            action: "sale",
-          },
-        ],
+        transactionStore: useTransactionStore(),
+        transactions: [],
         // Simulación de precios por criptomoneda
         cryptoPrices: {
           BTC: 30000,
@@ -112,10 +20,17 @@
       };
     },
     computed: {
-      filteredTransactions() {
-        return this.transactions.filter(
-          (transaction) => transaction.user_id === "USER1"
-        );
+      // filteredTransactions() {
+      //   // return this.transactions.filter(
+      //   //   (transaction) => transaction.user_id === "USER1"
+      //   // );
+      //   return this.transactions
+      // },
+      formatNumber(number) {
+        const numStr = number.toString();
+        const parts = numStr.split('.');
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        return parts.join(',');
       },
     },
     methods: {
@@ -124,6 +39,12 @@
         const totalAmount = transaction.crypto_amount * pricePerCrypto;
   
         return transaction.action === "purchase" ? -totalAmount : totalAmount;
+      },
+      formatNumberFn(number) {
+        const numStr = number.toString();
+        const parts = numStr.split('.');
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        return parts.join(',');
       },
       editTransaction(transaction) {
         alert(`Editando transacción: ${transaction.id}`);
@@ -143,13 +64,78 @@
         this.showModal = false;
         this.selectedTransaction = {};
       },
+      async getHistory(){
+        let data = await this.transactionStore.getHistory(localStorage.getItem('username'))
+        this.transactions = data ? data : [];
+      }
     },
+    mounted() {
+      this.getHistory()
+    }
   };
 </script>
   
+<template>
+  <div class="transaction-history">
+    <!-- <h2>Historial de Movimientos</h2> -->
+    <table style="width: 100%">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Crypto Code</th>
+          <th>Crypto Amount</th>
+          <th>Date Time</th>
+          <th>Action</th>
+          <th>Fiat Amoun</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          v-for="(transaction, index) in transactions"
+          :key="transaction.id"
+          :class="{'purchase-row': transaction.action == 'purchase',
+                       'sale-row': transaction.action == 'sale'}"
+        >
+          <td>{{ transactions.length - (transactions.length - (index+1)) }}</td>
+          <td>{{ transaction.crypto_code }}</td>
+          <td>{{ transaction.crypto_amount }}</td>
+          <td>{{ transaction.datetime }}</td>
+          <td :class="{ 'bold-tex': transaction.action === 'sale'}">
+                      {{ transaction.action === 'purchase' ? 'Purchase' : 'Sale' }}</td>
+          <td :class="{'money-positive': transaction.action === 'sale', 
+                       'money-negative': transaction.action === 'purchase'}">
+              $ {{this.formatNumberFn(transaction.money)}}
+          </td>
+          <td>
+            <button class="btn info" @click="viewTransaction(transaction)">Details</button>
+            <button class="btn warning" @click="editTransaction(transaction)">Edit</button>
+            <button class="btn danger" @click="deleteTransaction(transaction.id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Modal para ver los detalles de la transacción -->
+    <div v-if="showModal" class="modal-overlay">
+      <div class="modal">
+        <h3>Detalles de la Transacción</h3>
+        <p><strong>ID:</strong> {{ selectedTransaction._id }}</p>
+        <p><strong>Crypto Code:</strong> {{ selectedTransaction.crypto_code }}</p>
+        <p><strong>Amount:</strong> {{ selectedTransaction.crypto_amount }}</p>
+        <p><strong>Date Time:</strong> {{ selectedTransaction.datetime }}</p>
+        <p><strong>Action:</strong> {{ selectedTransaction.action === 'purchase' ? 'Purchase' : 'Sale' }}</p>
+        <p><strong>Fiat Amount:</strong>$ {{ this.formatNumberFn(selectedTransaction.money) }}</p>
+        <hr class="divider" />
+        <button @click="closeModal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</template>
+
 <style scoped>
   .transaction-history {
-    max-width: 900px;
+    /* max-width: 900px; */
     margin: 0 auto;
     padding: 20px;
     font-family: Arial, sans-serif;
@@ -188,13 +174,16 @@
   
   /* Estilo de las filas por tipo de transacción */
   .purchase-row {
-    background-color: #e6f4e6;
+    background-color: #e6f4e6 !important;
   }
   
   .sale-row {
-    background-color: #f9e6e6;
+    background-color: #f9e6e6 !important;
   }
   
+  .bold-text {
+    font-weight: bold;
+  }
   /* Estilo para el campo "Money" */
   .money-positive {
     color: green;
@@ -293,5 +282,12 @@
   .modal button:hover {
     background-color: #0056b3;
   }
+
+  .divider {
+    border: none;
+    border-top: 1px solid #cecdcd;
+    margin: 18px 0;
+  }
+
 </style>
   
