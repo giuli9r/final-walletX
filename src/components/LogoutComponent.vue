@@ -12,6 +12,7 @@ export default {
   methods: {
     logout() {
       console.log('Logging out!')
+      // this.cleaningLocalStorage();
       this.store.logout()
     }
   }

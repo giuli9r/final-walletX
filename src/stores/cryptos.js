@@ -29,7 +29,7 @@ export const useCryptoStore = defineStore('crypto', {
           )
           this.cryptos[cryptoCode] = criptoResponse.data
         }
-        console.log(this.cryptos);
+        // console.log(this.cryptos);
         this.cached = true;
       } catch (error) {
         console.log('Error fetching cryptocurrency prices:', error)
