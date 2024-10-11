@@ -16,7 +16,7 @@ export default {
 
   data() {
     return {
-      currentBackgroundColor: 'black' ,
+      currentBackgroundColor: 'dodgerblue' ,
       currentTextColor: 'white', 
     };
   },
@@ -26,7 +26,7 @@ export default {
       this.currentTextColor = 'black';  //
     },
     resetColor() {
-      this.currentBackgroundColor = 'black'; 
+      this.currentBackgroundColor = 'dodgerblue'; 
       this.currentTextColor = 'white';  
     }
   }
@@ -34,20 +34,14 @@ export default {
 </script>
 
 <style scoped>
-button {
-  background-color: rgb(94, 92, 92);
-  color: white;
-  padding: 10px;
-  border: none;
-  cursor: pointer;
-}
 
 .action-button {
-  width: 100%;
-  padding: 10px;
-  background-color: #3a3a3a;
+  width: 20%;
+  padding: 14px 28px;
+  font-size: 16px;
+  background-color: #424242;
   color: white;
-  font-size: 1rem;
+  /* font-size: 1rem; */
   font-weight: bold;
   border: none;
   border-radius: 5px;
