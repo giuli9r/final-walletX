@@ -147,7 +147,7 @@ export default {
 
 <template>
   <div class="container">
-  <h2 :style="{ backgroundColor: LightGray, color: bkgColor }">{{ title }} crypto</h2>
+  <h2 :style="{ backgroundColor: LightGray, color: bkgColor }">{{ title.toUpperCase() }} CRYPTO</h2>
     <form @submit.prevent="submitAction">
       <label>Quantity to {{ title }}</label>
       <input @input="updateOnChange" type="number" min="0" step="0.0000001" v-model="cryptoAmount" required />
@@ -166,8 +166,6 @@ export default {
 
       <label>Fiat Currency</label>
       <select v-model="selectedFiat">
-        <!-- <option value="USD">USD</option>
-        <option value="EUR">Euro</option> -->
         <option value="ARS">Peso AR</option>
       </select>
 
@@ -198,7 +196,8 @@ h2 {
   color: #333;
   opacity: 80%;
   padding: 10px 20px;
-  text-align: left;
+  text-align: center;
+  font-weight: bold;
   border-radius: 15px;
   border: 1px solid #b8b8b8;
   margin: 20px auto;
