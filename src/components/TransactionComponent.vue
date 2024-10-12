@@ -147,7 +147,7 @@ export default {
 
 <template>
   <div class="container">
-  <h2 :style="{ backgroundColor: LightGray, color: bkgColor }">{{ title.toUpperCase() }} CRYPTO</h2>
+  <h2 :style="{ backgroundColor: LightGray, color: bkgColor }">You can <strong> {{ title.toUpperCase() }} CRYPTO </strong> here</h2>
     <form @submit.prevent="submitAction">
       <label>Quantity to {{ title }}</label>
       <input @input="updateOnChange" type="number" min="0" step="0.0000001" v-model="cryptoAmount" required />
@@ -197,7 +197,7 @@ h2 {
   opacity: 80%;
   padding: 10px 20px;
   text-align: center;
-  font-weight: bold;
+  /* font-weight: bold; */
   border-radius: 15px;
   border: 1px solid #b8b8b8;
   margin: 20px auto;
