@@ -80,14 +80,16 @@ export const useTransactionStore = defineStore('transaction', {
       
     },
 
-    editTransaction(transactionID){
+    editTransaction(transactionJson){
       try {
-        this.transactions;
+        let transactionObj = JSON.parse(transactionJson)
+        // this.transactions;
         /**
          CALL TO API WITH AXIOS.PATH
          TRANSACTION_ID, NEW_PARAMS
          */
-        console.log("Transaction edited: " + transactionID)
+        alert("Transaction edited: " + transactionObj._id)
+        // console.log("Transaction edited: " + transactionID)
       } catch (error) {
         console.log(error)
       }
