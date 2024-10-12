@@ -1,5 +1,6 @@
 <script>
 import { useTransactionStore } from '@/stores/transactionStore';
+import { useCryptoStore } from '@/stores/cryptos';
 
 
   export default {
@@ -7,15 +8,13 @@ import { useTransactionStore } from '@/stores/transactionStore';
     data() {
       return {
         transactionStore: useTransactionStore(),
+        cryptoStore: useCryptoStore(),
+        cryptos: [ 'btc', 'eth', 'dai', 'sol', 'usdt'],
         transactions: [],
-        // Simulación de precios por criptomoneda
-        cryptoPrices: {
-          BTC: 30000,
-          ETH: 2000,
-          LTC: 150,
-        },
+
         // Control de modal
         showModal: false,
+        showModalEditar: false,
         selectedTransaction: {},
       };
     },
@@ -46,15 +45,29 @@ import { useTransactionStore } from '@/stores/transactionStore';
         parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
         return parts.join(',');
       },
+      formatDate(isoDate){
+        // const isoDate = "2024-11-10T19:40:00.000Z";
+        let dateObj = new Date(isoDate);
+
+        // Obtener las partes de la fecha y la hora
+        let year = dateObj.getFullYear();
+        let month = String(dateObj.getMonth() + 1).padStart(2, '0'); // Los meses empiezan desde 0
+        let day = String(dateObj.getDate()).padStart(2, '0');
+        let hours = String(dateObj.getHours()).padStart(2, '0');
+        let minutes = String(dateObj.getMinutes()).padStart(2, '0');
+
+        return `${year}-${month}-${day} ${hours}:${minutes}`;
+      },
       editTransaction(transaction) {
-        alert(`Editando transacción: ${transaction.id}`);
+        alert(`Editando transacción: ${transaction._id}`);
+        this.showModalEditar = true;
+        this.selectedTransaction = transaction;
       },
       deleteTransaction(id) {
         this.transactions = this.transactions.filter(
           (transaction) => transaction.id !== id
         );
       },
-      // Muestra la modal con los detalles de la transacción
       viewTransaction(transaction) {
         this.selectedTransaction = transaction;
         this.showModal = true;
@@ -62,7 +75,16 @@ import { useTransactionStore } from '@/stores/transactionStore';
       // Cierra la modal
       closeModal() {
         this.showModal = false;
+        this.showModalEditar = false;
         this.selectedTransaction = {};
+      },
+      saveEdit(jsonTransaction) {
+        this.showModalEditar = false;
+        this.transactionStore.editTransaction(jsonTransaction)
+        this.selectedTransaction = {};
+      },
+      selectCrypto(){
+        // this.selectedTransaction.crypto_code = crypto
       },
       async getHistory(){
         let data = await this.transactionStore.getHistory(localStorage.getItem('username'))
@@ -93,14 +115,14 @@ import { useTransactionStore } from '@/stores/transactionStore';
       <tbody>
         <tr
           v-for="(transaction, index) in transactions"
-          :key="transaction.id"
+          :key="transaction._id"
           :class="{'purchase-row': transaction.action == 'purchase',
                        'sale-row': transaction.action == 'sale'}"
         >
           <td>{{ transactions.length - (transactions.length - (index+1)) }}</td>
           <td>{{ transaction.crypto_code }}</td>
           <td>{{ transaction.crypto_amount }}</td>
-          <td>{{ transaction.datetime }}</td>
+          <td>{{ this.formatDate(transaction.datetime) }}</td>
           <td :class="{ 'bold-tex': transaction.action === 'sale'}">
                       {{ transaction.action === 'purchase' ? 'Purchase' : 'Sale' }}</td>
           <td :class="{'money-positive': transaction.action === 'sale', 
@@ -115,19 +137,53 @@ import { useTransactionStore } from '@/stores/transactionStore';
         </tr>
       </tbody>
     </table>
+    <span class="info-data" v-show="!this.transactions.length"> No transactions made yet.</span>
 
     <!-- Modal para ver los detalles de la transacción -->
     <div v-if="showModal" class="modal-overlay">
       <div class="modal">
-        <h3>Detalles de la Transacción</h3>
+        <h3>Transaction Details </h3>
         <p><strong>ID:</strong> {{ selectedTransaction._id }}</p>
         <p><strong>Crypto Code:</strong> {{ selectedTransaction.crypto_code }}</p>
         <p><strong>Amount:</strong> {{ selectedTransaction.crypto_amount }}</p>
-        <p><strong>Date Time:</strong> {{ selectedTransaction.datetime }}</p>
+        <p><strong>Date Time:</strong> {{ this.formatDate(selectedTransaction.datetime) }}</p>
         <p><strong>Action:</strong> {{ selectedTransaction.action === 'purchase' ? 'Purchase' : 'Sale' }}</p>
         <p><strong>Fiat Amount:</strong>$ {{ this.formatNumberFn(selectedTransaction.money) }}</p>
         <hr class="divider" />
-        <button @click="closeModal">Cerrar</button>
+        <button @click="closeModal">Close</button>
+      </div>
+    </div>
+
+    <!-- Modal para editar la transacción -->
+    <div v-if="showModalEditar" class="modal-overlay">
+      <div class="modal">
+        <h3>Youy can correct your values here </h3>
+         <!-- ID (No editable) -->
+        <p><strong>ID:</strong> {{ selectedTransaction._id }}</p>
+        <!-- Crypto Code (Editable) -->
+        <p><strong>Crypto Code:</strong>
+          <!-- <input v-model="selectedTransaction.crypto_code" type="text" disabled/> -->
+          <select v-model="selectedTransaction.crypto_code" >
+            <option disabled value="">Select Crypto</option>
+            <option v-for="(crypto, i) in cryptos" :key="i" :value="crypto" >{{ crypto.toUpperCase() }}</option>
+          </select>
+        </p>
+        <!-- Amount (Editable) -->
+        <p><strong>Amount:</strong>
+          <input v-model="selectedTransaction.crypto_amount" type="number" min="0" step="any" />
+        </p>
+        <!-- Date Time (No editable) -->
+        <p><strong>Date Time:</strong> {{ this.formatDate(selectedTransaction.datetime) }}</p>
+        <!-- Action (No editable) -->
+        <p><strong>Action:</strong> {{ selectedTransaction.action === 'purchase' ? 'Purchase' : 'Sale' }}</p>
+        <!-- Fiat Amount (Editable) -->
+        <p><strong>Fiat Amount:</strong> 
+          <input v-model="selectedTransaction.money" type="number" min="0" step="any" />
+        </p>
+        <hr class="divider" />
+
+        <button @click="closeModal">Close</button>
+        <button @click="saveEdit(JSON.stringify(selectedTransaction))">Confirm</button>
       </div>
     </div>
   </div>
@@ -170,6 +226,14 @@ import { useTransactionStore } from '@/stores/transactionStore';
   
   tbody tr:nth-child(even) {
     background-color: #f9f9f9;
+  }
+
+  .info-data{
+    font-size: 16px;
+    color: #555; /* Color gris suave */
+    font-style: italic; /* Texto en cursiva para dar un tono informativo */
+    /* text-align: center; */
+    justify-content: center;
   }
   
   /* Estilo de las filas por tipo de transacción */
