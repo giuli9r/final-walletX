@@ -69,7 +69,6 @@ export const useTransactionStore = defineStore('transaction', {
 
         // add transaction to local storage and update wallet values
         this.saveTransactionLocal(transactionObj, response.data);
-        // this.transactions.push(transactionObj)
         this.updateWalletState(transactionObj);
         console.log("transaction added, wallet state and transaction-key storage updated ")
         console.log('Response Data:', response.data);
@@ -86,7 +85,7 @@ export const useTransactionStore = defineStore('transaction', {
 
     async editTransaction(transactionEdited){
       try {
-        let transactionObj = JSON.parse(transactionEdited)        
+        let transactionObj = transactionEdited       
         let newValues = this.newValues(transactionObj);
         if (!newValues) return false
 
@@ -94,7 +93,7 @@ export const useTransactionStore = defineStore('transaction', {
         console.log('EDIT RESPONSE READY');
         console.log(response.data);
         this.updateWalletState(transactionObj)
-        return response.data._id;
+        return response.data;
       } catch (error) {
         alert("Error in transactionStore.editTransaction")
         console.log(error)
