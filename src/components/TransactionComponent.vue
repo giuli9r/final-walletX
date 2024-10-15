@@ -150,7 +150,7 @@ export default {
   <h2 :style="{ backgroundColor: LightGray, color: bkgColor }">You can <strong> {{ title.toUpperCase() }} CRYPTO </strong> here</h2>
     <form @submit.prevent="submitAction">
       <label>Quantity to {{ title }}</label>
-      <input @input="updateOnChange" type="number" min="0" step="0.0000001" v-model="cryptoAmount" required />
+      <input @input="updateOnChange" type="number" min="0" step="0.000000001" v-model="cryptoAmount" required />
 
       <label>Crypto Currency</label>
       <select @change="updateOnChange" v-model="selectedCrypto">
