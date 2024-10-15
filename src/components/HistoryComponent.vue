@@ -63,10 +63,17 @@ import { useCryptoStore } from '@/stores/cryptos';
         this.showModalEditar = true;
         this.selectedTransaction = transaction;
       },
-      deleteTransaction(id) {
+      async deleteTransaction(transactionObj) {
+        let id = transactionObj._id;
         this.transactions = this.transactions.filter(
           (transaction) => transaction.id !== id
         );
+        let response = await this.transactionStore.deleteTransaction(transactionObj)
+        this.selectedTransaction = {};
+        if(!response) {
+          alert("An error ocurred when trying to delete.")
+          return;
+        }
       },
       viewTransaction(transaction) {
         this.selectedTransaction = transaction;
@@ -78,10 +85,14 @@ import { useCryptoStore } from '@/stores/cryptos';
         this.showModalEditar = false;
         this.selectedTransaction = {};
       },
-      saveEdit(jsonTransaction) {
+      async saveEdit(jsonTransaction) {
         this.showModalEditar = false;
-        this.transactionStore.editTransaction(jsonTransaction)
+        let response = await this.transactionStore.editTransaction(jsonTransaction)
         this.selectedTransaction = {};
+        if(!response) {
+          alert("An error ocurred during edition.")
+          return;
+        }
       },
       selectCrypto(){
         // this.selectedTransaction.crypto_code = crypto
@@ -127,12 +138,12 @@ import { useCryptoStore } from '@/stores/cryptos';
                       {{ transaction.action === 'purchase' ? 'Purchase' : 'Sale' }}</td>
           <td :class="{'money-positive': transaction.action === 'sale', 
                        'money-negative': transaction.action === 'purchase'}">
-              $ {{this.formatNumberFn(transaction.money)}}
+              $ {{ this.formatNumberFn(transaction.money) }}
           </td>
           <td>
             <button class="btn info" @click="viewTransaction(transaction)">Details</button>
             <button class="btn warning" @click="editTransaction(transaction)">Edit</button>
-            <button class="btn danger" @click="deleteTransaction(transaction.id)">Delete</button>
+            <button class="btn danger" @click="deleteTransaction(transaction)">Delete</button>
           </td>
         </tr>
       </tbody>
@@ -165,7 +176,7 @@ import { useCryptoStore } from '@/stores/cryptos';
           <!-- <input v-model="selectedTransaction.crypto_code" type="text" disabled/> -->
           <select v-model="selectedTransaction.crypto_code" >
             <option disabled value="">Select Crypto</option>
-            <option v-for="(crypto, i) in cryptos" :key="i" :value="crypto" >{{ crypto.toUpperCase() }}</option>
+            <option v-for="(crypto, i) in cryptos" :key="i" :value="crypto.toUpperCase()" >{{ crypto.toUpperCase() }}</option>
           </select>
         </p>
         <!-- Amount (Editable) -->
