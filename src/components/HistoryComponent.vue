@@ -59,9 +59,10 @@ import { useCryptoStore } from '@/stores/cryptos';
         return `${year}-${month}-${day} ${hours}:${minutes}`;
       },
       editTransaction(transaction) {
-        alert(`Editando transacción: ${transaction._id}`);
         this.showModalEditar = true;
-        this.selectedTransaction = transaction;
+        this.selectedTransaction._id = transaction._id;
+        this.selectedTransaction.action = transaction.action;
+        this.selectedTransaction.datetime = transaction.datetime;
       },
       async deleteTransaction(transactionObj) {
         let id = transactionObj._id;
@@ -80,17 +81,20 @@ import { useCryptoStore } from '@/stores/cryptos';
         this.showModal = true;
       },
       // Cierra la modal
-      closeModal() {
+      closeModal(reaload) {
         this.showModal = false;
         this.showModalEditar = false;
         this.selectedTransaction = {};
+        if (reaload)  location.reload()
       },
-      async saveEdit(jsonTransaction) {
+      async saveEdit(selectedTransaction) {
         this.showModalEditar = false;
-        let response = await this.transactionStore.editTransaction(jsonTransaction)
+        let response = await this.transactionStore.editTransaction(selectedTransaction)
+        this.getHistory()
         this.selectedTransaction = {};
         if(!response) {
           alert("An error ocurred during edition.")
+          this.selectedTransaction = {};
           return;
         }
       },
@@ -131,7 +135,7 @@ import { useCryptoStore } from '@/stores/cryptos';
                        'sale-row': transaction.action == 'sale'}"
         >
           <td>{{ transactions.length - (transactions.length - (index+1)) }}</td>
-          <td>{{ transaction.crypto_code }}</td>
+          <td>{{ transaction.crypto_code.toUpperCase() }}</td>
           <td>{{ transaction.crypto_amount }}</td>
           <td>{{ this.formatDate(transaction.datetime) }}</td>
           <td :class="{ 'bold-tex': transaction.action === 'sale'}">
@@ -155,13 +159,13 @@ import { useCryptoStore } from '@/stores/cryptos';
       <div class="modal">
         <h3>Transaction Details </h3>
         <p><strong>ID:</strong> {{ selectedTransaction._id }}</p>
-        <p><strong>Crypto Code:</strong> {{ selectedTransaction.crypto_code }}</p>
+        <p><strong>Crypto Code:</strong> {{ selectedTransaction.crypto_code.toUpperCase() }}</p>
         <p><strong>Amount:</strong> {{ selectedTransaction.crypto_amount }}</p>
         <p><strong>Date Time:</strong> {{ this.formatDate(selectedTransaction.datetime) }}</p>
         <p><strong>Action:</strong> {{ selectedTransaction.action === 'purchase' ? 'Purchase' : 'Sale' }}</p>
         <p><strong>Fiat Amount:</strong>$ {{ this.formatNumberFn(selectedTransaction.money) }}</p>
         <hr class="divider" />
-        <button @click="closeModal">Close</button>
+        <button @click="closeModal(false)">Close</button>
       </div>
     </div>
 
@@ -173,11 +177,10 @@ import { useCryptoStore } from '@/stores/cryptos';
         <p><strong>ID:</strong> {{ selectedTransaction._id }}</p>
         <!-- Crypto Code (Editable) -->
         <p><strong>Crypto Code:</strong>
-          <!-- <input v-model="selectedTransaction.crypto_code" type="text" disabled/> -->
           <select v-model="selectedTransaction.crypto_code" >
             <option disabled value="">Select Crypto</option>
             <option v-for="(crypto, i) in cryptos" :key="i" :value="crypto.toUpperCase()" >{{ crypto.toUpperCase() }}</option>
-          </select>
+          </select> <span style="color: red" > *</span>
         </p>
         <!-- Amount (Editable) -->
         <p><strong>Amount:</strong>
@@ -188,13 +191,13 @@ import { useCryptoStore } from '@/stores/cryptos';
         <!-- Action (No editable) -->
         <p><strong>Action:</strong> {{ selectedTransaction.action === 'purchase' ? 'Purchase' : 'Sale' }}</p>
         <!-- Fiat Amount (Editable) -->
-        <p><strong>Fiat Amount:</strong> 
-          <input v-model="selectedTransaction.money" type="number" min="0" step="any" />
+        <p><strong>Fiat Amount:</strong>
+          <input v-model="selectedTransaction.money" type="number" min="0" step="any" /><span style="color: red" > *</span>
         </p>
         <hr class="divider" />
 
-        <button @click="closeModal">Close</button>
-        <button @click="saveEdit(JSON.stringify(selectedTransaction))">Confirm</button>
+        <button @click="closeModal(false)">Close</button>
+        <button @click="saveEdit(selectedTransaction)">Confirm</button>
       </div>
     </div>
   </div>
