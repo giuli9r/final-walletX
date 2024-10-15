@@ -31,6 +31,25 @@ export const useTransactionStore = defineStore('transaction', {
   
   actions: {
 
+    newValues(transactionObj) {
+      if (transactionObj.money == undefined || transactionObj.crypto_code == undefined ){
+        alert("ERROR! Missing values.")
+        return false
+      }
+      const { crypto_code, crypto_amount, money } = transactionObj;
+      let obj = {};
+      if(crypto_amount) {
+        obj.crypto_amount = crypto_amount
+      }
+      if (crypto_code){
+        obj.crypto_code = crypto_code.toLowerCase()
+      }
+      if(money) {
+        obj.money = money
+      }
+      return obj ?? false;
+    },
+
     /** C.R.U.D */
 
     async addTransaction(transactionObj) {
@@ -65,31 +84,38 @@ export const useTransactionStore = defineStore('transaction', {
       }
     },
 
-    deleteTransaction(transactionID){
-
+    async editTransaction(transactionEdited){
       try {
-        this.transactions.pop()
-        /**
-         CALL TO API WITH AXIOS.DELETE
-          ID_TRANSACTION 
-         */
-        console.log("Transaction deleted: " + transactionID)
+        let transactionObj = JSON.parse(transactionEdited)        
+        let newValues = this.newValues(transactionObj);
+        if (!newValues) return false
+
+        let response = await apiClient.patch(`${API_BASE_URL}/${transactionObj._id}`, newValues);
+        console.log('EDIT RESPONSE READY');
+        console.log(response.data);
+        this.updateWalletState(transactionObj)
+        return response.data._id;
       } catch (error) {
+        alert("Error in transactionStore.editTransaction")
         console.log(error)
       }
-      
     },
 
-    editTransaction(transactionJson){
+    async deleteTransaction(transactionObj){
+      let id = transactionObj._id;
       try {
-        let transactionObj = JSON.parse(transactionJson)
-        // this.transactions;
-        /**
-         CALL TO API WITH AXIOS.PATH
-         TRANSACTION_ID, NEW_PARAMS
-         */
-        alert("Transaction edited: " + transactionObj._id)
-        // console.log("Transaction edited: " + transactionID)
+        if (id == undefined || id == null){
+          alert("ERROR! Missing values.")
+          return false
+        }
+        let url = `https://laboratorio3-f36a.restdb.io/rest/transactions/${id}`
+        let response = await apiClient.delete(url, '');
+        
+        console.log('DELETE RESPONSE READY');
+        console.log(response.data);
+ 
+        alert("Transaction DELETED: " + id)
+        this.updateWalletState(transactionObj)  // mejorar
       } catch (error) {
         console.log(error)
       }
