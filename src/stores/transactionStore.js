@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useLoginStore } from './loginStore';
 import { defineStore } from 'pinia'
 
 
@@ -12,6 +13,7 @@ const apiClient = axios.create({
 export const useTransactionStore = defineStore('transaction', {
   
   state: () => ({
+    loginStore: useLoginStore(),
     transactions: [],
     wallet: {
       btc: { amount : 0.00 },
@@ -180,24 +182,29 @@ export const useTransactionStore = defineStore('transaction', {
     async updateWalletFromServer(username){
       try {
         const response = await apiClient.get(`${API_BASE_URL}?q={"user_id":"${username}"}`);
-    
+        this.wallet.fiatAmount = 0;
         for (const transaction of response.data) {
           if (transaction.crypto_code && transaction.action) {
             let cryptoCode = transaction.crypto_code.toLowerCase();
     
-            if (this.wallet[cryptoCode]['amount'] === undefined) {
-              this.wallet[cryptoCode]['amount'] = 0;
-            }
+            // if (this.wallet[cryptoCode]['amount'] === undefined) {
+            //   this.wallet[cryptoCode]['amount'] = 0;
+            // }
             this.wallet[cryptoCode]['amount'] += transaction.action === 'purchase' ? parseFloat(transaction.crypto_amount) : -parseFloat(transaction.crypto_amount);
            
           }
+          this.updateWalletState(transaction)
         }
+        this.transactions = response.data;
     
       } catch (error) {
         console.error('Error returning wallet state from server.', error);
       }
     },
 
+  },
+  mounted(){
+    // this.updateWalletFromServer(this.loginStore.username);
   },
 
   persist: {

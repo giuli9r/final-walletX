@@ -107,6 +107,7 @@ import { useCryptoStore } from '@/stores/cryptos';
       }
     },
     mounted() {
+      this.transactionStore.updateWalletFromServer(localStorage.getItem('username'))
       this.getHistory()
     }
   };
@@ -153,6 +154,8 @@ import { useCryptoStore } from '@/stores/cryptos';
       </tbody>
     </table>
     <span class="info-data" v-show="!this.transactions.length"> No transactions made yet.</span>
+  <br>
+    <span class="info-data" v-show="this.transactions.length"> Fiat Amount:$ {{ formatNumberFn(this.transactionStore.wallet.fiatAmount.toFixed(2)) }}</span>
 
     <!-- Modal para ver los detalles de la transacción -->
     <div v-if="showModal" class="modal-overlay">
