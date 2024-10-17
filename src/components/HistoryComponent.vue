@@ -25,12 +25,12 @@ import { useCryptoStore } from '@/stores/cryptos';
       //   // );
       //   return this.transactions
       // },
-      formatNumber(number) {
-        const numStr = number.toString();
-        const parts = numStr.split('.');
-        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-        return parts.join(',');
-      },
+      // formatNumber(number) {
+      //   const numStr = number.toString();
+      //   const parts = numStr.split('.');
+      //   parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+      //   return parts.join(',');
+      // },
     },
     methods: {
       getMoneyAmount(transaction) {
@@ -44,6 +44,7 @@ import { useCryptoStore } from '@/stores/cryptos';
         const parts = numStr.split('.');
         parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
         return parts.join(',');
+        // return this.cryptoStore.formatNumberFn(number);
       },
       formatDate(isoDate){
         // const isoDate = "2024-11-10T19:40:00.000Z";
