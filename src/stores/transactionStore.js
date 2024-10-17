@@ -2,11 +2,13 @@ import axios from 'axios';
 import { useLoginStore } from './loginStore';
 import { defineStore } from 'pinia'
 
+// URL base: https://laboratorio3-5459.restdb.io/rest/ (es la que se usa como baseURL)
+// X-APIKEY: 64a57c2b86d8c50fe6ed8fa5
 
-const API_BASE_URL = 'https://laboratorio-36cf.restdb.io/rest/transactions';
+const API_BASE_URL = 'https://laboratorio3-5459.restdb.io/rest/transactions';
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
-  headers: {'X-APIKEY': '64a5ccf686d8c5d256ed8fce'},
+  headers: {'X-APIKEY': '64a57c2b86d8c50fe6ed8fa5'},
 });
 
 
@@ -28,6 +30,9 @@ export const useTransactionStore = defineStore('transaction', {
   getters: {
     getTransactionsStore(state) {
       return state.transactions
+    },
+    getWalletStore(state) {
+      return state.wallet
     }
   },
   
@@ -196,7 +201,7 @@ export const useTransactionStore = defineStore('transaction', {
           this.updateWalletState(transaction)
         }
         this.transactions = response.data;
-    
+        return response.data
       } catch (error) {
         console.error('Error returning wallet state from server.', error);
       }

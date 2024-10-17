@@ -1,7 +1,8 @@
 <script>
-// import { mapStores } from 'pinia';
+import StatisticsComponent from '@/components/StatisticsComponent.vue';
 
 export default {
+  components: { StatisticsComponent },
   data() {
     return {
       count: 1,
@@ -10,12 +11,6 @@ export default {
   },
 
   methods: {
-    increment() {
-      this.count++
-    },
-    sayHi() {
-      alert(this.viewName)
-    }
   },
   mounted() {
     console.log(`The ${this.viewName} view  mounted.`)
@@ -24,9 +19,8 @@ export default {
 </script>
 
 <template>
-  <h2>{{ this.viewName }}</h2>
-  <button @click="increment">Count is: {{ count }}</button>
-  <button @click="sayHi">Hi!</button>
+  <h2>{{ this.viewName }} of transactions</h2>
+  <statistics-component></statistics-component>
 </template>
 
 <style scoped>
