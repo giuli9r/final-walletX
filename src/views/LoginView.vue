@@ -1,64 +1,59 @@
 <script>
-import { useLoginStore } from '@/stores/loginStore.js';
-import { handleLogin } from '@/services/loginService.js';
-// import { useRouter } from 'vue-router';
+import { mapStores, mapActions } from 'pinia'
+import { useLoginStore } from '@/stores/loginStore.js'
+import { handleLogin } from '@/services/loginService.js'
 
 export default {
   data() {
     return {
+      store: useLoginStore(), // unica instancia de  id+Store.js en el componente
       username: '',
       password: '',
       showUsername: true,
       showPassword: false,
-      isLogged: false,
-      loginStore: useLoginStore(),
-      // router: useRouter() // Referencia unica
-    };
-  },
-  created() {
-    // Inicializamos las variables desde el store si existen
-    this.showUsername = this.loginStore.showUsername ?? "";
-    this.showPassword = this.loginStore.showPassword ?? "";
-    this.isLogged = this.loginStore.isLogged ?? false;
-  },
-  watch: {
-    'loginStore.showUsername'(newValue) {
-      this.showUsername = newValue;
-    },
-    'loginStore.showPassword'(newValue) {
-      this.showPassword = newValue;
-    },
-    'loginStore.isLogged'(newValue) {
-      this.isLogged = newValue;
+      isLoggedIn: false
     }
+  },
+  computed: {
+    // each store will be accessible as its id + 'Store'
+    ...mapStores(useLoginStore) //  loginStore.isLoggedIn, loginStore.showUserName, loginStore.username
   },
   methods: {
-    handleLogin() {
-      // Implementar verificación de usuario
-      if (this.username !== '' && this.password !== '') { // change to OR
-        handleLogin(this.username, this.password);
-        // const router = useRouter() // Referencia unica
-        // router.push('/'); // Redirige al usuario a la ruta de inicio
-        this.$router.push('/')
-      } else {
-        alert('Empty values are not allowed.');
-      }
-    },
+    ...mapActions(useLoginStore, [
+      'loginToLocal',
+      'logout',
+      'toggleUsernameVisibility',
+      'togglePasswordVisibility',
+      'checkLocalStorage',
+      'increment'
+    ]),
+
     toggleUsernameVisibility() {
-      this.loginStore.toggleUsernameVisibility();
+      this.loginStore.toggleUsernameVisibility()
     },
     togglePasswordVisibility() {
-      this.loginStore.togglePasswordVisibility();
+      this.loginStore.togglePasswordVisibility()
     },
-    alertUP() {
-      this.loginStore.alertUP();
+    loginToLocal(user, password) {
+      this.loginStore.loginToLocal(user, password) // forma para recuperar actions del Store.js
+    },
+    handleLogin() {
+      // login service
+      let check = handleLogin(this.username, this.password)
+      if (check) {
+        this.loginToLocal(this.username, this.password)
+        // this.loginStore.showStore()
+        this.$router.push('/')
+      } else {
+        alert('Some error occurr in the attempt to login')
+        this.$router.push('/login')
+      }
     }
   }
-};
+}
 </script>
 
 <template>
-  
   <div class="wrapper">
     <div class="login-container">
       <h2 class="green">Welcome!</h2>
@@ -66,44 +61,34 @@ export default {
         <label for="username">User</label>
         <div class="input-with-toggle">
           <input
-          :type="showUsername ? 'text' : 'password'"
-          id="username"
-          v-model="username"
+            :type="this.loginStore.showUsername ? 'text' : 'password'"
+            id="username"
+            v-model="username"
           />
-          <button @click="toggleUsernameVisibility">
-            {{ showUsername ? 'Hide' : 'Show' }}
+          <button @click="toggleUsernameVisibility()">
+            {{ this.loginStore.showUsername ? 'Hide' : 'Show' }}
           </button>
         </div>
-        
+
         <label for="password">Password</label>
         <div class="input-with-toggle">
           <input
-          :type="showPassword ? 'text' : 'password'"
-          id="password"
-          v-model="password"
+            :type="this.loginStore.showPassword ? 'text' : 'password'"
+            id="password"
+            v-model="password"
           />
-          <button @click="togglePasswordVisibility">
-            {{ showPassword ? 'Hide' : 'Show' }}
+          <button @click="togglePasswordVisibility()">
+            {{ this.loginStore.showPassword ? 'Hide' : 'Show' }}
           </button>
         </div>
       </div>
-      
+
       <button class="login-button" @click="handleLogin()">Login</button>
-      <!-- <button id="showUP" style="margin-top: 20px; font-size: 0.9em;" v-show="!this.logged" @click="alertUP">
-        Show User and Encrypted Password 
-      </button> -->
-      <!-- <p style="font-size: 0.8em; color: #999; margin-top: 10px;" v-show="this.logged">Login Info: logged</p>
-      <p style="font-size: 0.8em; color: #999; margin-top: 10px;" v-show="!this.logged">Login Info: not logged</p> -->
     </div>
-    <footer class="green">
-      <span class="pa"> © 2024 Final S.A. All Rights Reserved. </span>
-    </footer>
   </div>
 </template>
 
-
 <style scoped>
-
 .login-container {
   flex: auto;
   width: 340px;
@@ -116,7 +101,7 @@ export default {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-footer{
+footer {
   display: flex;
   justify-content: center; /* Centra horizontalmente */
 }
@@ -138,15 +123,14 @@ label {
   margin-bottom: 5px;
   color: #666;
   margin-top: 22px;
-
 }
 
 .green {
-text-decoration: none;
-color: hsla(160, 100%, 37%, 1);
-transition: 0.4s;
-padding: 3px;
-font-weight: 700
+  text-decoration: none;
+  color: hsla(160, 100%, 37%, 1);
+  transition: 0.4s;
+  padding: 3px;
+  font-weight: 700;
 }
 
 .input-with-toggle {
@@ -191,14 +175,13 @@ button:hover {
   background-color: #218838;
 }
 
-
 .pa2 {
-   display: flex;
-    margin: 30px;
-    color: #ededed69;
+  display: flex;
+  margin: 30px;
+  color: #ededed69;
 }
 
-.center{
-   justify-content: center
+.center {
+  justify-content: center;
 }
 </style>

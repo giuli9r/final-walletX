@@ -1,5 +1,5 @@
 <template>
-  <footer class="footer">
+  <footer>
     <p>© 2024 CryptoX. All rights reserved.</p>
     <ul class="footer-links">
       <li><a href="terms-of-service" target="_blank">Terms of Service</a></li>
@@ -9,7 +9,6 @@
   </footer>
 </template>
 
-
 <script>
 export default {}
 </script>
@@ -17,7 +16,12 @@ export default {}
 <style scoped>
 footer {
   text-align: center;
-  padding: 20px;
+  padding: 10px;
+  background-color: #f8f9fa;
+  position: relative;
+  z-index: -999;
+  bottom: 0;
+  width: 100%;
 }
 footer ul {
   list-style: none;
@@ -27,15 +31,6 @@ footer ul {
 }
 footer a {
   color: black;
-}
-
-.footer {
-  background-color: #f8f9fa;
-  padding: 20px;
-  text-align: center;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
 }
 
 .footer-links {

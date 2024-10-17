@@ -1,20 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { useLoginStore } from '@/stores/loginStore.js'
-
 import HomeView from '@/views/HomeView.vue';
 import LoginView from '@/views/LoginView.vue';
-import TransactionComponent from '@/components/TransactionComponent.vue'
-import HomeComponent from '@/components/HomeComponent.vue'
-import PurchaseComponent from '@/components/actions/PurchaseComponent.vue'
-import SaleComponent from '@/components/actions/SaleComponent.vue'
-
-
+import TransactionView from '@/views/TransactionView.vue';
 
 const routes = [
   {
     path: '/',
     name: 'Home',
-    component: HomeComponent,
+    component: HomeView,
   },
   {
     path: '/login',
@@ -24,22 +17,27 @@ const routes = [
   {
     path: '/transactions',
     name: 'transactions',
-    component: TransactionComponent, // O algún otro componente para manejar las tabs
+    component: TransactionView, // O algún otro componente para manejar las tabs
   },
   {
     path: '/statistics',
     name: 'statistics',
-    component: () => import('@/components/StatisticsComponent.vue'), // Lazy loading
+    component: () => import('@/views/StatisticsView.vue'), // Lazy loading
   },
   {
     path: '/history',
     name: 'history',
-    component: () => import('@/components/HistoryComponent.vue'),
+    component: () => import('@/views/HistoryView.vue'),
   },
   {
     path: '/help',
     name: 'help',
-    component: () => import('@/components/HelpComponent.vue'),
+    component: () => import('@/views/HelpView.vue'),
+  },
+  {
+    path: '/example',
+    name: 'example',
+    component: () => import('@/views/ExampleView.vue'),
   },
 ];
 
@@ -50,9 +48,10 @@ const router = createRouter({
   });
   
 router.beforeEach((to, from, next) => {
-    const loginStore = useLoginStore(); 
-  
-    if (to.name !== 'Login' && !loginStore.isLogged) {
+    // const loginStore = useLoginStore(); 
+    let isLoggedIn = localStorage.getItem('isLoggedIn') === "true"?? 0;
+
+    if (to.name !== 'Login' && !isLoggedIn) {
       // Si no está logueado y trata de acceder a una ruta protegida
       next({ name: 'Login' });
     } else {
