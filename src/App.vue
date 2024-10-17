@@ -1,81 +1,52 @@
 <script>
-import WelcomeToLogin from './components/WelcomeToLogin.vue'
-import HomeView from './views/HomeView.vue'
-import LoginView from './views/LoginView.vue'
-import { useLoginStore } from './stores/loginStore.js'
+import NavBarComponent from '@/components/NavBarApp.vue'
+import FooterComponent from '@/components/Footer.vue'
+// refactor to clean code after this commit
 
 export default {
+  created() {
+    document.title = 'CryptoX'
+  },
   components: {
-    WelcomeToLogin,
-    LoginView,
-    HomeView,
+    NavBarComponent,
+    FooterComponent
+  },
+  mounted() {
+    console.log(`The root view  mounted.`)
+    console.log(`Detecting user logged....`)
+    // console.log('Var: ' + localStorage.getItem('isLoggedIn'))
   },
   data() {
     return {
-      isLogged: false, // Inicialmente en falso,
-    };
-  },
-  created() {
-    const loginStore = useLoginStore();
-     // Verificar el estado del login al montar el componente
-    loginStore.checkLocalStorage();
-     // Sincronizar la variable isLogged con el estado del loginStore
-    this.isLogged = loginStore.isLogged;
-  },
-  watch: {
-    'loginStore.showUsername'(newValue) {
-      this.showUsername = newValue;
-    },
-    'loginStore.showPassword'(newValue) {
-      this.showPassword = newValue;
-    },
-    'loginStore.isLogged'(newValue) {
-      this.isLogged = newValue;
+      // isLoggedIn: false // Inicialmente en falso {no needed}
     }
   },
-};
+  methods: {
+    // updateisLoggedIn(){                 {no needed}
+    //   this.isLoggedIn = true;
+    // }
+  }
+}
 </script>
 
 <template>
-  <header>
-    <div class="wrapper">
-      <WelcomeToLogin v-show="!isLogged" msg="You are not logged in yet!" />
-    </div>
-  </header>
-  <main>
-    <LoginView v-show="!isLogged" />
-  </main>
-  <div>
-    <HomeView v-show="isLogged" />
-  </div>
-
+  <NavBarComponent />
+  <router-view />
+  <FooterComponent />
 </template>
 
 <style scoped>
 header {
   line-height: 1.5;
+  display: flex;
+  place-items: center;
+  padding-right: calc(var(--section-gap) / 2);
+  background-color: rgb(248, 247, 243);
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+header .wrapper {
+  display: flex;
+  place-items: flex-start;
+  flex-wrap: wrap;
 }
 </style>

@@ -14,8 +14,6 @@ defineProps({
       Please enter
       <span class="a2">user</span> and
       <span class="a2">password</span>.
-      <!-- <a href="" target="" rel="noopener">user</a> and
-      <a href="" target="" rel="noopener">password</a>. -->
     </h3>
   </div>
 </template>
