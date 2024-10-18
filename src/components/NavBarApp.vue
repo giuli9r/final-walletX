@@ -19,6 +19,7 @@ export default {
     console.log(`The NavBar view  mounted.`)
     console.log(`Detecting user logged....`)
     console.log('Var: ' + localStorage.getItem('isLoggedIn'))
+    // this.loginStore.checkLocalStorage();
   },
   methods: {
     updateisLoggedIn() {
@@ -31,32 +32,33 @@ export default {
 <template>
   <nav class="navbar">
     <ul class="nav-links">
-      <!-- <li v-if="this.loginStore.isLoggedIn" > -->
-      <li v-if="this.isLoggedIn">
+      <li v-if="this.loginStore.isLoggedIn" >
+      <!-- <li v-if="this.isLoggedIn"> -->
         <router-link to="/">Home</router-link>
       </li>
-      <!-- <li v-if="this.loginStore.isLoggedIn" > -->
-      <li v-if="this.isLoggedIn">
+      <li v-if="this.loginStore.isLoggedIn" >
+      <!-- <li v-if="this.isLoggedIn"> -->
         <router-link to="/transactions">Transactions</router-link>
       </li>
-      <!-- <li v-if="this.loginStore.isLoggedIn" > -->
-      <li v-if="this.isLoggedIn">
+      <li v-if="this.loginStore.isLoggedIn" >
+      <!-- <li v-if="this.isLoggedIn"> -->
         <router-link to="/statistics">Statistics</router-link>
       </li>
-      <!-- <li v-if="this.loginStore.isLoggedIn" > -->
-      <li v-if="this.isLoggedIn">
+      <li v-if="this.loginStore.isLoggedIn" >
+      <!-- <li v-if="this.isLoggedIn"> -->
         <router-link to="/history">History</router-link>
       </li>
-      <!-- <li v-if="this.loginStore.isLoggedIn" > -->
-      <li v-if="this.isLoggedIn">
+      <li v-if="this.loginStore.isLoggedIn" >
+      <!-- <li v-if="this.isLoggedIn"> -->
         <router-link to="/help">Help</router-link>
       </li>
-      <li v-if="this.isLoggedIn">
+      <li v-if="this.loginStore.isLoggedIn" >
+      <!-- <li v-if="this.isLoggedIn"> -->
         <router-link to="/example">Example</router-link>
       </li>
 
-      <!-- <li v-if="!this.loginStore.isLoggedIn"> -->
-      <li v-if="!this.isLoggedIn">
+      <li v-if="!this.loginStore.isLoggedIn" >
+      <!-- <li v-if="this.isLoggedIn"> -->
         <router-link to="/login">Log In</router-link>
       </li>
     </ul>
