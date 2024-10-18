@@ -24,7 +24,9 @@ export default {
     },
     calculateTotals(walletArray) {
       const totals = {}; // totales x crypto_code
-      let totalMoney = 0; // total fiatamount 
+      let totalMoney = 0; // total fiatamount as sell/buy balance
+      let totalMoneyAllSell = 0; // total fiatamount if we sale all
+      let cryptos = JSON.parse(localStorage.getItem('crypto-key')).cryptos  // cryptos
 
       walletArray.forEach(transaction => {
         let action = transaction.action;
@@ -37,18 +39,25 @@ export default {
           totals[crypto] = { totalMoney: 0, totalCrypto: 0 };
         }
 
+        let bid_price_updated = Object.values(cryptos[crypto.toLowerCase()])[0].totalBid;
         //  valores acumulados
-        totals[crypto].totalMoney += money; // en realidad esto se calcula con el precio actual de la crypto (req a criptoya) => totals[crypto].totalCrypto * realPrice
+        totals[crypto].totalMoney +=  ( cryptoAmount * bid_price_updated); // se calcula con el precio actual de la crypto  => (req a criptoya) => totals[crypto].totalCrypto * crypto_price
         totals[crypto].totalCrypto += cryptoAmount;
+        // totalMoneyAllSell += totals[crypto].totalMoney;
         totalMoney += money;
       });
 
+      // total fiat amount si vendemos todo
       Object.keys(totals).forEach(crypto => {
-        const percentage = (totals[crypto].totalMoney / totalMoney) * 100;
-        totals[crypto].percentage = percentage.toFixed(2);
+        totalMoneyAllSell += totals[crypto].totalMoney;
       });
 
-      return { totals, totalMoney };
+      Object.keys(totals).forEach(crypto => {
+        const percentage = (totals[crypto].totalMoney / totalMoneyAllSell) * 100;
+        totals[crypto].percentage = Math.abs(percentage.toFixed(2));
+      });
+
+      return { totals, totalMoney, totalMoneyAllSell };
     },
 
     async getHistory(){
@@ -65,12 +74,18 @@ export default {
   },
    async mounted() {
     console.log("fetch transactions - IN PROGRESS.....")
-    // this.cryptoStore.fetchCryptosPrices();
+    this.cryptoStore.fetchCryptosPrices();
     console.log("fetch transactions data - DONE.")
     let result = await this.transactionStore.updateWalletFromServer(localStorage.getItem('username'));
     let objTotales = this.calculateTotals(result);
     this.wallet = objTotales.totals;
+
+    // this.totalWalletValueSellAll = objTotales.totalMoneyAllSell;
+    this.totalWalletValueSellAll = objTotales.totalMoneyAllSell  >= 0 ? objTotales.totalMoneyAllSell : 0;
+
     this.totalWalletValue = objTotales.totalMoney;
+    // this.totalWalletValue = objTotales.totalMoney >= 0 ? objTotales.totalMoney : 0;
+    
     // this.getHistory()
    }
 }
@@ -91,7 +106,7 @@ export default {
         </thead>
         <tbody>
           <!-- Iteramos sobre el objeto agrupado que contiene las criptomonedas -->
-          <tr v-for="(transaction, key) in this.wallet" :key="key">
+          <tr v-for="(transaction, key) in this.wallet" :key="key" v-show="transaction.totalCrypto">
             <td>{{ key.toUpperCase() }}</td>
             <td>{{ this.formatNumberFn(transaction.totalCrypto.toFixed(4)) }}</td>
             <td>{{ this.formatNumberFn(transaction.totalMoney.toFixed(2)) }}</td>
@@ -99,6 +114,10 @@ export default {
           </tr>
         </tbody>
         <tfoot>
+          <tr>
+            <td colspan="2"><strong>Balance of Fiat Amount if you sell all: </strong></td>
+            <td colspan="2">$ {{ this.formatNumberFn(totalWalletValueSellAll) }}</td>
+          </tr>
           <tr>
             <td colspan="2"><strong>Balance of Fiat Amount: </strong></td>
             <td colspan="2">$ {{ this.formatNumberFn(totalWalletValue.toFixed(2)) }}</td>
@@ -148,6 +167,10 @@ h1 {
 
 .crypto-table th, .crypto-table td {
   border-radius: 8px;
+}
+
+tfoot{
+  border-top: 2px solid #949292;
 }
 
 tfoot td {
