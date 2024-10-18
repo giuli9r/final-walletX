@@ -3,13 +3,11 @@ import { useCryptoStore } from '@/stores/cryptos.js';
 import { useTransactionStore } from '@/stores/transactionStore.js';
 import { useLoginStore } from '@/stores/loginStore.js';
 import ActionButton from './buttons/actionButton.vue'
-// import { useTransactionStore } from '@/stores/transactionStore.js';
 
 export default {
   props: {
     title: String,
     bkgColor: String
-    // buttonLabel: String
   },
   components: {
     ActionButton
@@ -130,9 +128,6 @@ export default {
   },
 
   computed: {
-    // selectedCryptoValue() {
-    //   this.cryptos.selectedCrypto
-    // },
     action() {
       return this.title != 'Sell' ? 'purchase' : 'sale'
     }
