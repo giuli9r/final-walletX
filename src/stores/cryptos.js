@@ -36,6 +36,7 @@ export const useCryptoStore = defineStore('crypto', {
       }
     },
     formatNumber(number) {
+      if(!number) return 0
       const numStr = number.toString();
       const parts = numStr.split('.');
       parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');

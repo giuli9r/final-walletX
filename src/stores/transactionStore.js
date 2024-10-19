@@ -5,10 +5,14 @@ import { defineStore } from 'pinia'
 // URL base: https://laboratorio3-5459.restdb.io/rest/ (es la que se usa como baseURL)
 // X-APIKEY: 64a57c2b86d8c50fe6ed8fa5
 
-const API_BASE_URL = 'https://laboratorio3-5459.restdb.io/rest/transactions';
+// URL base: https://laboratorio3-5fc7.restdb.io/rest/ (es la que se usa como baseURL)
+// X-APIKEY: 64bdbc3386d8c5613ded91e7
+
+
+const API_BASE_URL = 'https://laboratorio3-5fc7.restdb.io/rest/transactions';
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
-  headers: {'X-APIKEY': '64a57c2b86d8c50fe6ed8fa5'},
+  headers: {'X-APIKEY': '64bdbc3386d8c5613ded91e7'},
 });
 
 
@@ -169,8 +173,8 @@ export const useTransactionStore = defineStore('transaction', {
         return true;
       } else {
         if (fiatAmount > this.wallet.fiatAmount){ // si gasto mas de lo que tengo
-          alert(`Be careful! Not enought money in account to buy ${crypto_code.toUpperCase()}. ${this.wallet.fiatAmount} remaining. \n Don't worry, we wiil deposite $10.000.000 for this transaction (interest applies).`)
-          this.wallet.fiatAmount += 10000000;
+          alert(`Be careful! Not enought money in account to buy ${crypto_code.toUpperCase()}. $ ${this.wallet.fiatAmount} remaining. \n Don't worry, you can loose all the money you want (only in sandbox mode).`)
+          // this.wallet.fiatAmount += 10000000;
           return true;
         }
         // return true;

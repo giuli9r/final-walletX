@@ -3,13 +3,11 @@ import { useCryptoStore } from '@/stores/cryptos.js';
 import { useTransactionStore } from '@/stores/transactionStore.js';
 import { useLoginStore } from '@/stores/loginStore.js';
 import ActionButton from './buttons/actionButton.vue'
-// import { useTransactionStore } from '@/stores/transactionStore.js';
 
 export default {
   props: {
     title: String,
     bkgColor: String
-    // buttonLabel: String
   },
   components: {
     ActionButton
@@ -27,7 +25,7 @@ export default {
       cryptos: [
         { name: 'Bitcoin', code: 'BTC'}, 
         { name: 'Ethereum', code: 'ETH'}, 
-        { name: 'DAI', code: 'BTC'}, 
+        { name: 'DAI', code: 'DAI'}, 
         { name: 'Solana', code: 'SOL'}, 
         { name: 'USDT', code: 'USDT'},
       ]
@@ -48,32 +46,33 @@ export default {
       let exchangeWinner = "";
 
       if (exchangeList) {
-      if( this.action == 'purchase') {
-        // totalAsk = Precio de compra final incluyendo las comisiones de transferencia y trade
-        // si quiero comprar tengo que buscar el menor precio
-        Object.keys(exchangeList).forEach((key) => {
-          if (exchangeList[key].totalAsk < minPriceInMarket && exchangeList[key].totalAsk != 0) {
-            minPriceInMarket = exchangeList[key].totalAsk;   
-            exchangeWinner = key;
-          }
-        });
-        this.fiatAmount = (minPriceInMarket * this.cryptoAmount).toFixed(2)
-      console.log(`Crypto de ${ exchangeWinner } al mejor precio: ${ minPriceInMarket }`);
-      }
+          
+        if( this.action == 'purchase') {
+          // totalAsk = Precio de compra final incluyendo las comisiones de transferencia y trade
+          // si quiero comprar tengo que buscar el menor precio
+          Object.keys(exchangeList).forEach((key) => {
+            if (exchangeList[key].totalAsk < minPriceInMarket && exchangeList[key].totalAsk != 0) {
+              minPriceInMarket = exchangeList[key].totalAsk;   
+              exchangeWinner = key;
+            }
+          });
+          this.fiatAmount = (minPriceInMarket * this.cryptoAmount).toFixed(2)
+        console.log(`Crypto de ${ exchangeWinner } al mejor precio: ${ minPriceInMarket }`);
+        }
 
-      // totalBid = Precio de venta final incluyendo las comisiones de transferencia y trade
-      if( this.action == 'sale') {
-        // si quiero vender tengo que buscar el mayor precio
-        Object.keys(exchangeList).forEach((key) => {
-          if (exchangeList[key].totalBid > maxPriceInMarket && exchangeList[key].totalBid != 0) {
-            maxPriceInMarket = exchangeList[key].totalBid;   
-            exchangeWinner = key;
-          }
-        });
-        this.fiatAmount = (maxPriceInMarket * this.cryptoAmount).toFixed(2)
-      console.log(`Crypto de ${ exchangeWinner } al mejor precio: ${ maxPriceInMarket }`);
-      }
-      this.exchangeWinnerPrice =  exchangeWinner.toUpperCase();
+        // totalBid = Precio de venta final incluyendo las comisiones de transferencia y trade
+        if( this.action == 'sale') {
+          // si quiero vender tengo que buscar el mayor precio
+          Object.keys(exchangeList).forEach((key) => {
+            if (exchangeList[key].totalBid > maxPriceInMarket && exchangeList[key].totalBid != 0) {
+              maxPriceInMarket = exchangeList[key].totalBid;   
+              exchangeWinner = key;
+            }
+          });
+          this.fiatAmount = (maxPriceInMarket * this.cryptoAmount).toFixed(2)
+          console.log(`Crypto de ${ exchangeWinner } al mejor precio: ${ maxPriceInMarket }`);
+        }
+        this.exchangeWinnerPrice =  exchangeWinner.toUpperCase();
       }
       return;
     },
@@ -130,9 +129,6 @@ export default {
   },
 
   computed: {
-    // selectedCryptoValue() {
-    //   this.cryptos.selectedCrypto
-    // },
     action() {
       return this.title != 'Sell' ? 'purchase' : 'sale'
     }
