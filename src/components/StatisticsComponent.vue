@@ -39,7 +39,7 @@ export default {
 
         // Si la criptomoneda no existe, la inicializamos
         if (!totals[crypto]) {
-          totals[crypto] = { totalMoney: 0, totalCrypto: 0 };
+          totals[crypto] = { totalMoney: 0, totalCrypto: 0 , result_proftis: 0}; // totalMoney: total moneda corriente al precio de crypto HOY
         }
    
         let crypto_codeL = crypto.toLowerCase()
@@ -50,7 +50,9 @@ export default {
         totals[crypto].totalMoney +=  ( cryptoAmount * bid_price_updated); // se calcula con el precio actual de la crypto  => (req a criptoya) => totals[crypto].totalCrypto * crypto_price
         totals[crypto].totalCrypto += cryptoAmount;
         // totalMoneyAllSell += totals[crypto].totalMoney;
-        totalMoney += money;
+
+        totalMoney += money; // total de moneda corriente per crypto (deriva del momento transaccion)
+        totals[crypto].result_proftis  += money; // Profit/Loss per Crypto
       });
 
       // total fiat amount si vendemos todo
@@ -146,31 +148,34 @@ export default {
           <tr>
             <th>Crypto</th>
             <th>Quantity</th>
-            <th>Fiat Amount</th>
+            <th>Last minute Fiat Amount</th>
             <th>% Total Fiat Amount</th>
+            <th>Profit/Loss per Crypto</th>
           </tr>
         </thead>
         <tbody>
           <!-- Iteramos sobre el objeto agrupado que contiene las criptomonedas -->
-          <tr v-for="(transaction, key) in this.wallet" :key="key" v-show="transaction.totalCrypto">
+          <tr v-for="(transaction, key) in this.wallet" :key="key" >
             <td>{{ key.toUpperCase() }}</td>
             <td>{{ this.formatNumberFn(transaction.totalCrypto.toFixed(4)) }}</td>
             <td>{{ this.formatNumberFn(transaction.totalMoney.toFixed(2)) }}</td>
             <td>{{ this.formatNumberFn(transaction.percentage) }}%</td>
+            <td>{{ this.formatNumberFn(transaction.result_proftis.toFixed(2)) }}</td>
+            <!-- <td>{{ this.formatNumberFn(1500) }}</td> -->
           </tr>
         </tbody>
         <tfoot>
           <tr>
             <td colspan="2"><strong>Total Fiat Value (if sold): </strong></td>
-            <td colspan="2">$ {{ this.formatNumberFn(totalWalletValueSellAll.toFixed(2)) }}</td>
+            <td colspan="3">$ {{ this.formatNumberFn(totalWalletValueSellAll.toFixed(2)) }}</td>
           </tr>
           <tr>
             <td colspan="2"><strong>Current Fiat Balance: </strong></td>
-            <td colspan="2">$ {{ this.formatNumberFn(totalWalletValue.toFixed(2)) }}</td>
+            <td colspan="3">$ {{ this.formatNumberFn(totalWalletValue.toFixed(2)) }}</td>
           </tr>
           <tr>
             <td colspan="2"><strong>Profit/Loss from Selling: </strong></td>
-            <td colspan="2">$ {{ this.formatNumberFn(differenceMade.toFixed(2)) }}</td>
+            <td colspan="3">$ {{ this.formatNumberFn(differenceMade.toFixed(2)) }}</td>
           </tr>
         </tfoot>
       </table>

@@ -19,18 +19,7 @@ import { useCryptoStore } from '@/stores/cryptos';
       };
     },
     computed: {
-      // filteredTransactions() {
-      //   // return this.transactions.filter(
-      //   //   (transaction) => transaction.user_id === "USER1"
-      //   // );
-      //   return this.transactions
-      // },
-      // formatNumber(number) {
-      //   const numStr = number.toString();
-      //   const parts = numStr.split('.');
-      //   parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-      //   return parts.join(',');
-      // },
+
     },
     methods: {
       getMoneyAmount(transaction) {
@@ -187,7 +176,7 @@ import { useCryptoStore } from '@/stores/cryptos';
           </select> <span style="color: red" > *</span>
         </p>
         <!-- Amount (Editable) -->
-        <p><strong>Amount:</strong>
+        <p><strong>Crypto Amount:</strong>
           <input v-model="selectedTransaction.crypto_amount" type="number" min="0" step="any" />
         </p>
         <!-- Date Time (No editable) -->
