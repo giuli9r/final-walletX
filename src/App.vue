@@ -1,57 +1,52 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
-import HomeView from './views/HomeView.vue'
-import LoginView from './views/LoginView.vue'
+<script>
+import NavBarComponent from '@/components/NavBarApp.vue'
+import FooterComponent from '@/components/Footer.vue'
+// refactor to clean code after this commit
 
-import { useLoginStore } from './stores/loginStore.js'
-const login = useLoginStore();
-
+export default {
+  created() {
+    document.title = 'CryptoX'
+  },
+  components: {
+    NavBarComponent,
+    FooterComponent
+  },
+  mounted() {
+    console.log(`The root view  mounted.`)
+    console.log(`Detecting user logged....`)
+    // console.log('Var: ' + localStorage.getItem('isLoggedIn'))
+  },
+  data() {
+    return {
+      // isLoggedIn: false // Inicialmente en falso {no needed}
+    }
+  },
+  methods: {
+    // updateisLoggedIn(){                 {no needed}
+    //   this.isLoggedIn = true;
+    // }
+  }
+}
 </script>
 
 <template>
-  <header>
-    <!-- <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" /> -->
-
-    <div class="wrapper">
-      <HelloWorld v-if="login.showDiv" msg="You are not logged in yet!" />
-    </div>
-  </header>
-  
-  <main>
-    <!-- <TheWelcome /> -->
-    <HomeView  v-if="login.showDiv" msg="msg1 from App"  />
-    <LoginView v-if="login.showDiv" msgLogin="LoginView from App" />
-  </main>
-
-
+  <NavBarComponent />
+  <router-view />
+  <FooterComponent />
 </template>
 
 <style scoped>
 header {
   line-height: 1.5;
+  display: flex;
+  place-items: center;
+  padding-right: calc(var(--section-gap) / 2);
+  background-color: rgb(248, 247, 243);
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+header .wrapper {
+  display: flex;
+  place-items: flex-start;
+  flex-wrap: wrap;
 }
 </style>
