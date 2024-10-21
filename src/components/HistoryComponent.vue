@@ -11,6 +11,7 @@ import { useCryptoStore } from '@/stores/cryptos';
         cryptoStore: useCryptoStore(),
         cryptos: [ 'btc', 'eth', 'dai', 'sol', 'usdt'],
         transactions: [],
+        loadingHistory: false,
 
         // Control de modal
         showModal: false,
@@ -64,7 +65,13 @@ import { useCryptoStore } from '@/stores/cryptos';
         if(!response) {
           alert("An error ocurred when trying to delete.")
           return;
+        } else {
+          this.deleteFromComponent(id)
         }
+      },
+      deleteFromComponent(idEliminar){
+        let transacciones = JSON.parse(localStorage.getItem('transaction-key')).transactions;
+        this.transactions = transacciones.filter(transaccion => transaccion._id !== idEliminar);
       },
       viewTransaction(transaction) {
         this.selectedTransaction = transaction;
@@ -92,8 +99,10 @@ import { useCryptoStore } from '@/stores/cryptos';
         // this.selectedTransaction.crypto_code = crypto
       },
       async getHistory(){
+        this.loadingHistory = true;
         let data = await this.transactionStore.getHistory(localStorage.getItem('username'))
         this.transactions = data ? data : [];
+        this.loadingHistory = false;
       }
     },
     mounted() {
@@ -143,7 +152,10 @@ import { useCryptoStore } from '@/stores/cryptos';
         </tr>
       </tbody>
     </table>
-    <span class="info-data" v-show="!this.transactions.length"> No transactions made yet.</span>
+    <span class="info-data" v-show="!this.transactions.length && !this.loadingHistory" >No transactions made yet.</span>
+    <span class="info-data" :class="{ isLoading: this.isLoading }" v-show="this.loadingHistory"> Please wait. Loading data from server .... </span>
+    <span class="loader" v-show="this.loadingHistory"></span>
+
   <br>
     <span class="info-data" v-show="this.transactions.length"> Fiat Amount:$ {{ formatNumberFn(this.transactionStore.wallet.fiatAmount.toFixed(2)) }}</span>
 
@@ -197,6 +209,41 @@ import { useCryptoStore } from '@/stores/cryptos';
 </template>
 
 <style scoped>
+.isLoading{
+  color:#f44336 !important
+}
+.loader {
+  width: 36px;
+  height: 36px;
+  border: 3px solid #a8a8a8;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+.loader::after {
+    content: '   ';  
+    box-sizing: border-box;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-bottom-color: #FF3D00;
+}
+    
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+} 
   .transaction-history {
     /* max-width: 900px; */
     margin: 0 auto;

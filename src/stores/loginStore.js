@@ -29,7 +29,8 @@ export const useLoginStore = defineStore('login', {
     logout() {
       this.isLoggedIn = false
       localStorage.setItem('isLoggedIn', false)
-      alert('Logged out!')
+      // alert('Logged out!')
+      window.location.reload()
     },
     checkLocalStorage() {
       const storedStatus = localStorage.getItem('isLoggedIn')

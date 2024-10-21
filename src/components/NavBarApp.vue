@@ -52,10 +52,6 @@ export default {
       <!-- <li v-if="this.isLoggedIn"> -->
         <router-link to="/help">Help</router-link>
       </li>
-      <li v-if="this.loginStore.isLoggedIn" >
-      <!-- <li v-if="this.isLoggedIn"> -->
-        <router-link to="/example">Example</router-link>
-      </li>
 
       <li v-if="!this.loginStore.isLoggedIn" >
       <!-- <li v-if="this.isLoggedIn"> -->

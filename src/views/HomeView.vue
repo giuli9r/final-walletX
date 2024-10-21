@@ -40,6 +40,8 @@ export default {
           <span class="a2">buy</span> and <span class="a2">sale</span> with ease, but at your own
           risk.
         </h3>
+        <hr class="divider" />
+
         <div>
           <logout-component />
         </div>
@@ -72,5 +74,11 @@ h3 {
 .greetings h1,
 .greetings h3 {
   text-align: center;
+}
+
+.divider {
+  border: none;
+  border-top: 2px solid #f0dcdc;
+  margin: 18px 0;
 }
 </style>
