@@ -7,12 +7,15 @@ import { defineStore } from 'pinia'
 
 // URL base: https://laboratorio3-5fc7.restdb.io/rest/ (es la que se usa como baseURL)
 // X-APIKEY: 64bdbc3386d8c5613ded91e7
+// "Access-Control-Allow-Origin" : *
 
+// URL base: https://labor3-d60e.restdb.io/rest/ (es la que se usa como baseURL)
+// X-APIKEY: 64a2e9bc86d8c525a3ed8f63
 
-const API_BASE_URL = 'https://laboratorio3-5fc7.restdb.io/rest/transactions';
+const API_BASE_URL = 'https://labor3-d60e.restdb.io/rest/transactions';
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
-  headers: {'X-APIKEY': '64bdbc3386d8c5613ded91e7'},
+  headers: {'X-APIKEY': '64a2e9bc86d8c525a3ed8f63'},
 });
 
 
@@ -86,10 +89,8 @@ export const useTransactionStore = defineStore('transaction', {
         return response.data;
 
       } catch (error) {
-        console.error('Error when adding new transaction:', error);
-        if (error.response) {
-          console.log('Server Response:', error.response.data);
-        }
+        alert("["+error.code+"] Server Response: " + error.message+" (transaction not finished)")
+        console.log('Error when adding new transaction:' + error.message);
         console.log(error)
       }
     },
