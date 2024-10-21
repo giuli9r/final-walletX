@@ -13,18 +13,12 @@ export default {
   },
   mounted() {
     console.log(`The root view  mounted.`)
-    console.log(`Detecting user logged....`)
-    // console.log('Var: ' + localStorage.getItem('isLoggedIn'))
   },
   data() {
     return {
-      // isLoggedIn: false // Inicialmente en falso {no needed}
     }
   },
   methods: {
-    // updateisLoggedIn(){                 {no needed}
-    //   this.isLoggedIn = true;
-    // }
   }
 }
 </script>

@@ -45,12 +45,25 @@ export default {
         {
           question: "Statistics Explained",
           answer: "CryptoX uses statistics to give some insigths about wallet state and calculate profis/lost in real time.",
+          answer2: `\n 
+          Last minute Fiat Amount: Indicates the total fiat value of the cryptocurrency we hold, based on the price at the last minute.
+          % Total Fiat Amount	: The percentage it represents of the Total Fiat Value (if sold).	 
+           Profit/Loss per Crypto:  Shows the profit or loss you would get from selling this amount of crypto.`,
+          
           showAnswer: false
         },
         {
           question: "Transaction Explained",
-          answer: "CryptoX uses transaction in real time, calculating the best price in market to maximize your profits. You can buy and sell knowing that you do it at it best price at that moment.",
+          answer: `CryptoX uses transaction in real time, calculating the best price in market to maximize your profits. You can buy and sell knowing that you do it at it best price at that moment. \n`,
+          answer2: `\n 
+                    Total Fiat Value (if sold) \n
+                    indicates the total fiat value if all cryptocurrencies were sold.
+                    Current Fiat Balance \n
+                    Reflects the current fiat balance, showing what you have at this moment.
+                    Profit/Loss from Selling \n 
+                    Shows the profit or loss you would get from selling all cryptocurrencies, adding intuition in terms of the purpose of the calculation.`,
           showAnswer: false
+
         }
       ],
       viewName: "Help"
@@ -83,7 +96,8 @@ export default {
         </span>
       </div>
       <div v-if="faq.showAnswer" class="faq-answer">
-        {{ faq.answer }}
+        {{ faq.answer }} <br>
+        {{ faq.answer2?? '' }}
       </div>
     </div>
   </div>

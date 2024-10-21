@@ -156,7 +156,7 @@ export default {
 
       <hr class="divider" />
 
-      <label>Fiat Amount</label>
+      <label>Fiat Amount (calculated)</label>
       <input type="number" min="0" step="0.000000001" v-model="this.fiatAmount" value="this.fiatAmount" required disabled />
       <span v-if="this.exchangeWinnerPrice != '' "> El mejor precio lo tiene {{ this.exchangeWinnerPrice }} (incluye las comisiones de transferencia y trade)</span>
 
@@ -171,12 +171,37 @@ export default {
 </template>
 
 <style scoped>
+/* Importa una fuente de Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+
+h2 {
+  color: #333;
+  opacity: 0.8;
+  padding: 10px 20px;
+  text-align: center;
+  font-family: 'Poppins', sans-serif; /* Aplicamos una nueva fuente */
+  font-weight: 500; /* Un peso de fuente más definido */
+  border-radius: 15px;
+  border: 1px solid #b8b8b8;
+  margin: 20px auto;
+  width: 75%;
+  max-width: 650px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transiciones suaves */
+  background-color: #f9f9f9; /* Fondo más suave */
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+}
+
+h2:hover {
+  transform: scale(1.05); /* Aumenta un 5% al hacer hover */
+  box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.2); /* Sombra más intensa */
+}
 .container {
   border-radius: 15px;
   background-color: #f5f5f5;
   border: 1px solid #0a0a0a;
   padding: 5px;
   margin-bottom: 15px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); /* Sombra ligera */
 }
 
 .transaction-box {
@@ -186,19 +211,6 @@ export default {
   border-radius: 10px;
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
   margin-top: 50px;
-}
-
-h2 {
-  color: #333;
-  opacity: 80%;
-  padding: 10px 20px;
-  text-align: center;
-  /* font-weight: bold; */
-  border-radius: 15px;
-  border: 1px solid #b8b8b8;
-  margin: 20px auto;
-  width: 75%;
-  max-width: 650px;
 }
 
 .form-group {
