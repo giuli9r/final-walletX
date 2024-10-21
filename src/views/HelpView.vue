@@ -1,22 +1,4 @@
 <script>
-// import { mapStores } from 'pinia';
-
-// export default {
-//   data() {
-//     return {
-//       viewName: "Help"
-//     };
-//   },
- 
-//   methods: {
-//     sayHi(){
-//         alert(this.viewName)
-//     }
-//   },
-//   mounted() {
-//     console.log(`The ${this.viewName} view  mounted.`)
-//   }
-// };
 export default {
   data() {
     return {
@@ -70,7 +52,6 @@ export default {
     };
   },
   methods: {
-    // Alterna la visibilidad de la respuesta
     toggleAnswer(index) {
       this.faqs[index].showAnswer = !this.faqs[index].showAnswer;
     }
