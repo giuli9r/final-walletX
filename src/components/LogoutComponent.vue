@@ -59,6 +59,7 @@ button:hover {
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
+  width: 100%;
 }
 
 .button-57 span:first-child {
