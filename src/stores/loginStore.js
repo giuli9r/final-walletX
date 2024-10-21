@@ -28,8 +28,7 @@ export const useLoginStore = defineStore('login', {
     },
     logout() {
       this.isLoggedIn = false
-      localStorage.setItem('isLoggedIn', false)
-      // alert('Logged out!')
+      localStorage.clear();      
       window.location.reload()
     },
     checkLocalStorage() {
