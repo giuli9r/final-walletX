@@ -17,6 +17,7 @@ export default {
       cryptoStore: useCryptoStore(),
       transactionStore: useTransactionStore(),
       loginStore: useLoginStore(),
+      isLoading: false,
       cryptoAmount: 0,
       fiatAmount: 0, // a calcular con los datos devueltos de la API
       exchangeWinnerPrice: '',   // Exchange con mejor precio
@@ -86,7 +87,7 @@ export default {
         alert('Please enter a value greater than 0.')
         return
       }
-
+      this.isLoading = true; 
       let datetime = this.getTime();
       let username = localStorage.getItem('username');
       let action = this.title == 'Sell' ? 'sale' : 'purchase';
@@ -101,10 +102,17 @@ export default {
 
         console.log( `${this.title} ${this.cryptoAmount} ${this.selectedCrypto} at ${this.fiatAmount} - ${action} ` )
         console.log(`transactionData object `, transactionData)
-      let response = await this.transactionStore.addTransaction(transactionData); // API CALL
-      this.resetFormValuesToNull();
+      try {
+        let response = await this.transactionStore.addTransaction(transactionData); // API CALL
+        this.resetFormValuesToNull();
 
-      return response
+        return response
+      } catch (error) {
+          alert(error)
+          return false
+      } finally {
+        this.isLoading = false; 
+      }
     },
     getTime(){
       const fecha = new Date();
@@ -165,7 +173,9 @@ export default {
         <option value="ARS">Peso AR</option>
       </select>
 
-      <ActionButton style="margin-top: 15px" :label="title" :bkgColorHover="bkgColor" />
+      <ActionButton style="margin-top: 15px" :label="title" :bkgColorHover="bkgColor" :isLoading="this.isLoading">
+      </ActionButton>
+
     </form>
   </div>
 </template>

@@ -118,14 +118,12 @@ export const useTransactionStore = defineStore('transaction', {
           alert("ERROR! Missing values.")
           return false
         }
-        let url = `https://laboratorio3-f36a.restdb.io/rest/transactions/${id}`
-        let response = await apiClient.delete(url, '');
-        
+        let response = await apiClient.delete(`${API_BASE_URL}/${id}`, '');
         console.log('DELETE RESPONSE READY');
         console.log(response.data);
- 
         alert("Transaction DELETED: " + id)
-        this.updateWalletState(transactionObj)  // mejorar
+        return id
+        // this.updateWalletState(transactionObj)  // mejorar
       } catch (error) {
         console.log(error)
       }

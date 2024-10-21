@@ -63,8 +63,6 @@ export default {
 </script>
 
 <template>
-  
-  <h2>{{ this.viewName }}</h2>
   <div class="help-container">
     <h1>Help Center</h1>
     <p>Find answers to some of the most common questions below.</p>
