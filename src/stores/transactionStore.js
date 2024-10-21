@@ -7,12 +7,15 @@ import { defineStore } from 'pinia'
 
 // URL base: https://laboratorio3-5fc7.restdb.io/rest/ (es la que se usa como baseURL)
 // X-APIKEY: 64bdbc3386d8c5613ded91e7
+// "Access-Control-Allow-Origin" : *
 
+// URL base: https://labor3-d60e.restdb.io/rest/ (es la que se usa como baseURL)
+// X-APIKEY: 64a2e9bc86d8c525a3ed8f63
 
-const API_BASE_URL = 'https://laboratorio3-5fc7.restdb.io/rest/transactions';
+const API_BASE_URL = 'https://labor3-d60e.restdb.io/rest/transactions';
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
-  headers: {'X-APIKEY': '64bdbc3386d8c5613ded91e7'},
+  headers: {'X-APIKEY': '64a2e9bc86d8c525a3ed8f63'},
 });
 
 
@@ -86,10 +89,8 @@ export const useTransactionStore = defineStore('transaction', {
         return response.data;
 
       } catch (error) {
-        console.error('Error when adding new transaction:', error);
-        if (error.response) {
-          console.log('Server Response:', error.response.data);
-        }
+        alert("["+error.code+"] Server Response: " + error.message+" (transaction not finished)")
+        console.log('Error when adding new transaction:' + error.message);
         console.log(error)
       }
     },
@@ -118,14 +119,12 @@ export const useTransactionStore = defineStore('transaction', {
           alert("ERROR! Missing values.")
           return false
         }
-        let url = `https://laboratorio3-f36a.restdb.io/rest/transactions/${id}`
-        let response = await apiClient.delete(url, '');
-        
+        let response = await apiClient.delete(`${API_BASE_URL}/${id}`, '');
         console.log('DELETE RESPONSE READY');
         console.log(response.data);
- 
         alert("Transaction DELETED: " + id)
-        this.updateWalletState(transactionObj)  // mejorar
+        return id
+        // this.updateWalletState(transactionObj)  // mejorar
       } catch (error) {
         console.log(error)
       }
