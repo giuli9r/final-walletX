@@ -1,3 +1,4 @@
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/giuli9r/final-walletX)
 # finalwallet
 
 This template should help get you started developing with Vue 3 in Vite.
